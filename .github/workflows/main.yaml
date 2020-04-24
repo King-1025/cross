@@ -24,6 +24,10 @@ jobs:
          with:
            repository: crosstool-ng/crosstool-ng
            path: crosstool-ng
+       - name: 准备编译环境
+         if: env.CTNG_OK == 0 && success()
+         run: |
+            sudo apt install flex
        - name: 编译安装crosstool-ng
          shell: bash
          if: env.CTNG_OK == 0 && success()
