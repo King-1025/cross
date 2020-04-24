@@ -8,7 +8,7 @@
    },
    "tool": {
       "key": "aarch64-unknown-linux-android",
-      "config": ":key",
+      "config": "./config/build.config",
       "is_upload": "true"
    },
    "compile": {

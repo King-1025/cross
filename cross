@@ -2,7 +2,7 @@
 
 
 ROOT="$(pwd)"
-CONFIG=$ROOT/config.json
+CONFIG=$ROOT/.config.json
 RESULT=$ROOT/result
 
 function app()
@@ -113,8 +113,7 @@ function build_tool()
 		 exit 1
 	      fi
 	   fi
-	   #ct-ng build.6
-
+	   ct-ng build.4
 	   set_github_env "TOOL_BUILD" "$(pwd)"
 	else
 	  echo "cross tool oK!" 
