@@ -63,6 +63,8 @@ function install_tool()
 	     mkdir -p $TOOL_HOME
 	     cp .config $TOOL_HOME/build.config
 	     cat .config
+	     tree -a -L 3 -h
+	     tree -a -L 3 -h $HOME
 	  else
 	     echo "TOOL_BUILD not exist! $TOOL_BUILD"
 	     exit 1
@@ -98,7 +100,7 @@ function build_tool()
 	   echo "TOOL_KEY: $TOOL_KEY"
 	   mkdir build && cd build
            ct-ng $TOOL_KEY
-	  # ct-ng build.4
+	   ct-ng build.6
 	   set_github_env "TOOL_BUILD" "$(pwd)"
 	else
 	  echo "cross tool oK!" 
