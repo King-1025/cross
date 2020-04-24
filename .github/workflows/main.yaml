@@ -41,6 +41,12 @@ jobs:
        - name: 测试crosstool-ng环境
          run: ./cross test_tool ct-ng
 
+       - name: 上传文件
+         uses: actions/upload-artifact@v1
+         with:
+           name: ct-ng
+           path: {{ env.CTNG_HOME }}
+
   cross-tool:
      name: 准备交叉编译工具
      needs: prepare-crosstool-ng
@@ -49,9 +55,28 @@ jobs:
         run:
           shell: bash
      steps:
+       - name: 检索cross仓库
+         uses: actions/checkout@v2
+
+       - name: 初始化
+         run: ./cross prepare tool
+
+       - name: 检查交叉编译工具缓存
+         uses: actions/cache@v1
+         id: cache
+         with:
+            path: ${{ env.TOOL_HOME }}
+            key: ${{ runner.os }}-${{ env.TOOL_CACHE_KEY }}
+
+       - name: 下载ct-ng
+         if: steps.cache.outputs.cache-hit != "true"  
+         uses: actions/download-artifact@v1
+         with:
+           name: ct-ng
+
        - name: test
          run: |
             pwd
             ls
             env
-
+            exit 1

@@ -151,6 +151,10 @@ function prepare()
 	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
 	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-last"
      ;;
+     "tool") 
+	 set_github_env "TOOL_HOME" "$HOME/.crosstool"
+	 set_github_env "TOOL_CACHE_KEY" "aarch64-last"
+     ;;
    esac
 }
 
