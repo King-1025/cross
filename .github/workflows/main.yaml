@@ -48,7 +48,7 @@ jobs:
        - name: 准备crosstool-ng编译环境
          if: env.CTNG_OK == 0 && success()
          run: |
-            sudo apt-get install gperf bison flex texinfo gawk libtool libncurses5-dev help2man libtool
+            sudo apt install gperf bison flex texinfo gawk libtool libncurses5-dev help2man -y
 
        - name: 编译安装crosstool-ng
          shell: bash
