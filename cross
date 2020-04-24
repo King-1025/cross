@@ -95,7 +95,9 @@ function build_tool()
 	   echo "TOOL_KEY: $TOOL_KEY"
 	   mkdir build && cd build
            ct-ng $TOOL_KEY
-	   ct-ng build.4
+	  # ct-ng build.4
+	   ls
+	   ls $CTNG_HOME
 	   set_github_env "TOOL_BUILD" "$(pwd)"
 	else
 	  echo "cross tool oK!" 
@@ -249,7 +251,7 @@ function prepare()
 {
    local flag=$1
    shift
-   sudo apt install jq -y
+   sudo apt install jq tree -y
    case "$flag" in
      "ct-ng") 
 	 local key=$(jq .ctng.key $CONFIG -r)
