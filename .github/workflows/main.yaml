@@ -8,14 +8,14 @@ jobs:
         run:
           shell: bash
      env:
-        CTNG_HOME: $HOME/.crosstool-ng
+        CTNG_HOME: ~/.crosstool-ng
      steps:
        - name: 检查crosstool-ng环境
          shell: bash
          run: |
             export PATH=$PATH:$CTNG_HOME/bin
             echo "CTNG_HOME: $CTNG_HOME"
-            which ct-ng || export CTNG_OK=0
+            which ct-ng || export CTNG_OK=1
        - name: 检索crosstool-ng仓库
          uses: actions/checkout@v2
          if: env.CTNG_OK == 0
@@ -28,7 +28,7 @@ jobs:
          run: |
             pwd
             ls
-            # cd crosstool-ng
+            cd crosstool-ng
             ./bootstrap
             ./configure --prefix=$CTNG_HOME
             make -j4
