@@ -24,6 +24,7 @@ function test_tool()
    case "$flag" in
      "ct-ng")
          which ct-ng && ct-ng list-samples
+	 echo "ss: $CTNG_HOME" 
      ;;
    esac
 }
