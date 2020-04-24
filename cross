@@ -60,7 +60,9 @@ function install_tool()
 	     cd $TOOL_BUILD
 	     ls -a -l -h
 	     ls -a -l -h $CTNG_HOME
-	     mv .config $TOOL_HOME/build.config
+	     mkdir -p $TOOL_HOME
+	     cp .config $TOOL_HOME/build.config
+	     cat .config
 	  else
 	     echo "TOOL_BUILD not exist! $TOOL_BUILD"
 	     exit 1
