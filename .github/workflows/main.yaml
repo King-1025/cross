@@ -62,8 +62,9 @@ jobs:
             make -j4
             make install -j4
             which ct-ng && ct-ng list-samples
-        - name: test
-          run: |
+
+       - name: test
+         run: |
              pwd
              ls
              exit 1
