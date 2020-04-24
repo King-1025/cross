@@ -1,6 +1,9 @@
 #!/usr/bin/env bash
 
 
+ROOT="$(pwd)"
+CONFIG=$ROOT/config.json
+
 function app()
 {
    local action=$1
@@ -56,6 +59,14 @@ function build_tool()
    local flag=$1
    shift
    case "$flag" in
+     "tool")
+	if [ $TOOL_FLAG -eq 0 ]; then
+	   echo "TOOL_KEY: $TOOL_KEY"
+           ct-ng --help
+	else
+	  echo "cross tool oK!" 
+	fi
+     ;;
      "ct-ng")
 	if [ $CTNG_OK -eq 0 ]; then
 	  if [ -e "$CTNG_REPO" ] ; then
@@ -85,6 +96,19 @@ function compile_prepare()
    local flag=$1
    shift
    case "$flag" in
+     "tool")
+	if [ $TOOL_OK -eq 0 ]; then
+           which ct-ng
+	   if [ $? -eq 0 ]; then
+              echo "prepare for tool..."
+	   else
+	      echo "ct-ng not exist!"
+	      exit 1
+	   fi
+	else
+	  echo "cross tool oK!" 
+	fi
+     ;;
      "ct-ng")
 	if [ $CTNG_OK -eq 0 ]; then
 	  if [ "$CTNG_REPO" != "" ] ; then
@@ -108,8 +132,11 @@ function judge()
      "ct-ng")
 	if [ $CTNG_OK -eq 0 ]; then
 	   local r="$(pwd)/build/ct_ng"
-	   mkdir -p "$r"
-           git clone https://github.com/crosstool-ng/crosstool-ng $r -j 4
+	   if [ "$CTNG_SRC" == "clone" ]; then
+              git clone https://github.com/crosstool-ng/crosstool-ng $r -j 4
+	   elif [ "$CTNG_SRC" == "release" ]; then
+              echo "download crosstool-ng..."
+	   fi
            set_github_env "CTNG_REPO" "$r"
 	else
 	   echo "crosstool-ng Ok!"
@@ -123,6 +150,26 @@ function check()
    local flag=$1
    shift
    case "$flag" in
+     "tool")
+	local flag=0
+        if [ -e $TOOL_HOME ]; then
+             add_github_path "$TOOL_HOME/bin"
+	     flag=1
+	else
+	  if [ -e $CTNG_HOME ]; then
+             add_github_path "$CTNG_HOME/bin"
+	  else
+	    local path="$(pwd)/ct-ng"
+	    if [ -e $path ]; then
+               add_github_path "$path"
+	    else
+	       echo "not found tool and ct-ng!"
+	       exit 1
+	    fi
+	  fi
+	fi
+        set_github_env "TOOL_FLAG" "$flag"
+     ;;
      "ct-ng") 
 	    local is_ok=0
             echo "CACHE_HIT: $CACHE_HIT"
@@ -147,14 +194,24 @@ function prepare()
 {
    local flag=$1
    shift
+   sudo apt install jq -y
    case "$flag" in
      "ct-ng") 
+	 local key=$(jq .ctng.key $CONFIG -r)
+	 local src=$(jq .ctng.src $CONFIG -r)
 	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
-	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-last"
+	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-$key"
+	 set_github_env "CTNG_SRC" "$src"
      ;;
      "tool") 
+	 local ctng_key=$(jq .ctng.key $CONFIG -r)
+	 local tool_key=$(jq .tool.key $CONFIG -r)
 	 set_github_env "TOOL_HOME" "$HOME/.crosstool"
-	 set_github_env "TOOL_CACHE_KEY" "aarch64-last"
+	 set_github_env "TOOL_CACHE_KEY" "tool-$tool_key"
+	 set_github_env "TOOL_KEY" "$tool_key"
+
+	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
+	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-$ctng_key"
      ;;
    esac
 }

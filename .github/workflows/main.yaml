@@ -63,18 +63,35 @@ jobs:
 
        - name: 检查交叉编译工具缓存
          uses: actions/cache@v1
-         id: cache
+         id: cache_0
          with:
             path: ${{ env.TOOL_HOME }}
             key: ${{ runner.os }}-${{ env.TOOL_CACHE_KEY }}
 
+       - name: 检查ct-ng缓存
+         if: steps.cache_0.outputs.cache-hit != 'true'
+         uses: actions/cache@v1
+         id: cache_1
+         with:
+            path: ${{ env.CTNG_HOME }}
+            key: ${{ runner.os }}-${{ env.CTNG_CACHE_KEY }}
+
        - name: 下载ct-ng
-         if: steps.cache.outputs.cache-hit != 'true'
+         if: steps.cache_1.outputs.cache-hit != 'true'
          uses: actions/download-artifact@v1
          with:
            name: ct-ng
 
-       - name: test
+       - name: 检查交叉编译工具环境
+         run: ./cross check tool
+
+       - name: 准备tool编译环境
+         run: ./cross compile_prepare tool
+
+       - name: 编译cross tool
+         run: ./cross build_tool tool
+
+       - name: 
          run: |
             pwd
             ls

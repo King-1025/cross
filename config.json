@@ -1,0 +1,9 @@
+{
+   "ctng": {
+      "key": "last",
+      "src": "clone"
+   },
+   "tool":{
+      "key": "aarch64-unknown-linux-android"
+   }
+}
