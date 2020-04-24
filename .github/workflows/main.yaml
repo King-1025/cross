@@ -45,7 +45,7 @@ jobs:
          uses: actions/upload-artifact@v1
          with:
            name: ct-ng
-           path: {{ env.CTNG_HOME }}
+           path: $CTNG_HOME
 
   cross-tool:
      name: 准备交叉编译工具
