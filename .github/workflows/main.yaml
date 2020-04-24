@@ -69,7 +69,7 @@ jobs:
             key: ${{ runner.os }}-${{ env.TOOL_CACHE_KEY }}
 
        - name: 下载ct-ng
-         if: steps.cache.outputs.cache-hit != "true"  
+         if: steps.cache.outputs.cache-hit != 'true'
          uses: actions/download-artifact@v1
          with:
            name: ct-ng
