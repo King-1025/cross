@@ -18,6 +18,10 @@ jobs:
             echo "PATH: $PATH"
             which ct-ng && echo "::add-path::$CTNG_HOME/bin"
             which ct-ng || echo "::set-env name=CTNG_OK::1"
+       - name: test
+         run: |
+            echo $PATH
+            echo $CTNG_OK
        - name: 检索crosstool-ng仓库
          uses: actions/checkout@v2
          if: env.CTNG_OK == 0
