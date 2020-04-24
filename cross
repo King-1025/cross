@@ -87,7 +87,7 @@ function compile_prepare()
      "ct-ng")
 	if [ $CTNG_OK -eq 0 ]; then
 	  if [ "$CTNG_REPO" != "" ] ; then
-             sudo apt install gperf bison flex texinfo gawk libtool     libncurses5-dev help2man -y
+             sudo apt install gperf bison flex texinfo gawk libtool libtool-bin libncurses5-dev help2man -y
 	  else
 	    echo "CTNG_REPO empty!"
 	    exit 1
