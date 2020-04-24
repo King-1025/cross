@@ -16,12 +16,15 @@ jobs:
 
        - name: 检查crosstool-ng缓存
          uses: actions/cache@v1
+         id: cache
          with:
             path: ${{ env.CTNG_HOME }}
             key: ${{ runner.os }}-${{ env.CTNG_CACHE_KEY }}
 
        - name: 检查crosstool-ng环境
          run: ./cross check ct-ng
+         env:
+           CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
 
        - name: 检索crosstool-ng仓库
          uses: actions/checkout@v2
