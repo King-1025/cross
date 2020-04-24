@@ -3,14 +3,16 @@
       "key": "last",
       "src": "clone",
       "url": "https://github.com/crosstool-ng/crosstool-ng",
+      "flags": "",
       "is_upload": "false"
    },
    "tool": {
       "key": "aarch64-unknown-linux-android",
+      "config": ":key",
       "is_upload": "true"
    },
    "compile": {
       "script": "./test/build.sh",
-      "result": "./test/hello"
+      "is_upload": "true"
    }
 }

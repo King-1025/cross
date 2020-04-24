@@ -3,6 +3,7 @@
 
 ROOT="$(pwd)"
 CONFIG=$ROOT/config.json
+RESULT=$ROOT/result
 
 function app()
 {
@@ -26,6 +27,7 @@ function exec_script()
    if [ $COMPILE_FLAG -eq 1 ]; then
       local sc=$COMPILE_SCRIPT
       local re=$COMPILE_RESULT
+      mkdir -p $re
       if [ -e $sc ]; then
          $sc
 	 echo "RESULT: $re"
@@ -98,9 +100,21 @@ function build_tool()
      "tool")
 	if [ $TOOL_FLAG -eq 0 ]; then
 	   echo "TOOL_KEY: $TOOL_KEY"
-	   mkdir build && cd build
-           ct-ng $TOOL_KEY
-	   ct-ng build.6
+	   mkdir build 
+           if [ "$TOOL_CONFIG" == ":key" ]; then
+	      cd build
+              ct-ng $TOOL_KEY
+	   else
+	      if [ -e $TOOL_CONFIG ]; then
+		 cp -f $TOOL_CONFIG build/.config
+		 cd build
+	      else
+		 echo "not found config: $TOOL_CONFIG"
+		 exit 1
+	      fi
+	   fi
+	   #ct-ng build.6
+
 	   set_github_env "TOOL_BUILD" "$(pwd)"
 	else
 	  echo "cross tool oK!" 
@@ -110,7 +124,11 @@ function build_tool()
 	if [ $CTNG_OK -eq 0 ]; then
 	  if [ -e "$CTNG_REPO" ] ; then
              cd $CTNG_REPO
-             ./bootstrap && ./configure --prefix=$CTNG_HOME
+	     if [ "$CTNG_SRC" == "clone" ]; then
+               ./bootstrap && ./configure --prefix=$CTNG_HOME $CTNG_FLAGS
+	     else
+               ./configure --prefix=$CTNG_HOME $CTNG_FLAGS
+	     fi
 	     if [ $? -eq 0 ]; then
                 make -j 4
 	        set_github_env "CTNG_BUILD" "$(pwd)"
@@ -174,7 +192,7 @@ function judge()
 	   if [ "$CTNG_SRC" == "clone" ]; then
               git clone $CTNG_URL $r -j 4
 	   elif [ "$CTNG_SRC" == "release" ]; then
-              echo "download crosstool-ng..."
+              echo "TODO: download crosstool-ng..."
 	   fi
            set_github_env "CTNG_REPO" "$r"
 	else
@@ -261,19 +279,23 @@ function prepare()
 	 local src=$(jq .ctng.src $CONFIG -r)
 	 local url=$(jq .ctng.url $CONFIG -r)
 	 local isu=$(jq .ctng.is_upload $CONFIG -r)
+	 local flags=$(jq .ctng.flags $CONFIG -r)
 	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
 	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-$key"
 	 set_github_env "CTNG_SRC"  "$src"
 	 set_github_env "CTNG_URL"  "$url"
 	 set_github_env "IS_UPLOAD" "$isu"
+	 set_github_env "CTNG_FLAGS" "$flags"
      ;;
      "tool") 
 	 local ctng_key=$(jq .ctng.key $CONFIG -r)
 	 local tool_key=$(jq .tool.key $CONFIG -r)
+	 local tool_config=$(jq .tool.config $CONFIG -r)
 	 local isu=$(jq .tool.is_upload $CONFIG -r)
 	 set_github_env "TOOL_HOME" "$HOME/.crosstool"
 	 set_github_env "TOOL_CACHE_KEY" "tool-$tool_key"
 	 set_github_env "TOOL_KEY" "$tool_key"
+	 set_github_env "TOOL_CONFIG" "$tool_config"
 	 set_github_env "IS_UPLOAD" "$isu"
 
 	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
@@ -282,7 +304,7 @@ function prepare()
      "compile")
 	 local tool_key=$(jq .tool.key $CONFIG -r)
 	 local script=$(jq .compile.script $CONFIG -r)
-	 local result=$(jq .compile.result $CONFIG -r)
+	 local result=$RESULT
 	 local isu=$(jq .compile.is_upload $CONFIG -r)
 	 set_github_env "TOOL_HOME" "$HOME/.crosstool"
 	 set_github_env "TOOL_CACHE_KEY" "tool-$tool_key"

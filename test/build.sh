@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
+ROOT=$(pwd)
+RESULT=$ROOT/result
 
 CC=gcc
 
-$CC hello.c -o hello
+mkdir -p $RESULT
+
+$CC $ROOT/test/hello.c -o $RESULT/hello
