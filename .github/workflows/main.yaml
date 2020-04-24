@@ -1,0 +1,36 @@
+name: 交叉编译
+on: [push]
+jobs:
+  setup-crosstool-ng:
+     name: 准备crosstool-ng环境
+     runs-on: ubuntu-latest
+     defaults:
+        run:
+          shell: bash
+     env:
+        CTNG_HOME: ${{env.HOME}}/.crosstool-ng
+     steps:
+       - name: 检查crosstool-ng环境
+         shell: bash
+         run: |
+            export PATH=$PATH:$CTNG_HOME/bin
+            which ct-ng || export CTNG_OK=0
+       - name: 检索crosstool-ng仓库
+         uses: actions/checkout@v2
+         if: $CTNG_OK == 0
+         with:
+           repository: crosstool-ng/crosstool-ng
+           path: crosstool-ng
+       - name: 编译安装crosstool-ng
+         shell: bash
+         if: $CTNG_OK == 0
+         run: |
+            pwd
+            ls
+            # cd crosstool-ng
+            ./bootstrap
+            ./configure --prefix=$CTNG_HOME
+            make -j4
+            make install -j4
+            export PATH=$PATH:$CTNG_HOME/bin
+            ct-ng list-samples
