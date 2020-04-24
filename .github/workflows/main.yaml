@@ -23,8 +23,6 @@ jobs:
             #  ${{ runner.os }}-build-${{ env.cache-name }}-
             #  ${{ runner.os }}-build-
             #  ${{ runner.os }}-
-         outputs:
-            test: yes
 
        - name: 检查crosstool-ng环境
          shell: bash
