@@ -9,25 +9,47 @@ jobs:
           shell: bash
      env:
         CTNG_HOME: /home/runner/.crosstool-ng
+
      steps:
+       - name: 检查crosstool-ng缓存
+         uses: actions/cache@v1
+         id: cache
+         env:
+            cache-name: cache-crosstool-ng
+         with:
+            path: ${{ env.CTNG_HOME }}
+            key: ${{ runner.os }}-build-${{ env.cache-name }}-${{ hashFiles('**/crosstool-ng.json') }}
+            #            restore-keys: |
+            #  ${{ runner.os }}-build-${{ env.cache-name }}-
+            #  ${{ runner.os }}-build-
+            #  ${{ runner.os }}-
+         outputs:
+            test: yes
+
        - name: 检查crosstool-ng环境
          shell: bash
          run: |
+            echo "cache-hit: ${{ steps.cache.outputs.cache-hit }}"
+            echo "test: ${{ steps.cache.outputs.test }}"
+            echo "outputs: ${{ steps.cache.outputs }}"
             export PATH=$PATH:$CTNG_HOME/bin
             echo "CTNG_HOME: $CTNG_HOME"
             echo "PATH: $PATH"
             which ct-ng && echo "::add-path::$CTNG_HOME/bin"
             which ct-ng || echo "::set-env name=CTNG_OK::0"
+
        - name: 检索crosstool-ng仓库
          uses: actions/checkout@v2
          if: env.CTNG_OK == 0
          with:
            repository: crosstool-ng/crosstool-ng
            path: crosstool-ng
+
        - name: 准备crosstool-ng编译环境
          if: env.CTNG_OK == 0 && success()
          run: |
-            sudo apt-get install gperf bison flex texinfo gawk libtool libncurses5-dev
+            sudo apt-get install gperf bison flex texinfo gawk libtool libncurses5-dev help2man
+
        - name: 编译安装crosstool-ng
          shell: bash
          if: env.CTNG_OK == 0 && success()
@@ -40,3 +62,8 @@ jobs:
             make -j4
             make install -j4
             which ct-ng && ct-ng list-samples
+        - name: test
+          run: |
+             pwd
+             ls
+             exit 1
