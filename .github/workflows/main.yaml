@@ -13,10 +13,15 @@ jobs:
        - name: 检查crosstool-ng环境
          shell: bash
          run: |
-            echo "::add-path::$CTNG_HOME/bin"
+            export PATH=$PATH:$CTNG_HOME/bin
             echo "CTNG_HOME: $CTNG_HOME"
             echo "PATH: $PATH"
-            which ct-ng || echo "::set-env name=CTNG_OK::1"
+            which ct-ng
+            if [ $? -eq 0 ]; then
+               echo "::add-path::$CTNG_HOME/bin"
+            else
+               echo "::set-env name=CTNG_OK::1"
+            fi
        - name: 检索crosstool-ng仓库
          uses: actions/checkout@v2
          if: env.CTNG_OK == 0
