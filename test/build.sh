@@ -7,4 +7,4 @@ CC=aarch64-unknown-linux-android-gcc
 
 mkdir -p $RESULT
 
-$CC $ROOT/test/hello.c -o $RESULT/hello
+$CC -fPIC -Wall $ROOT/test/hello.c -o $RESULT/hello

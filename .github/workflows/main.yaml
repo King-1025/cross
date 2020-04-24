@@ -1,4 +1,4 @@
-name: 编译
+name: 交叉编译
 on: [push]
 jobs:
   prepare-crosstool-ng:
