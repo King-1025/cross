@@ -26,35 +26,17 @@ jobs:
          env:
            CACHE_HIT: ${{ steps.cache.outputs.cache-hit }}
 
-       - name: 检索crosstool-ng仓库
-         uses: actions/checkout@v2
-         if: env.CTNG_OK == 0
-         with:
-           repository: crosstool-ng/crosstool-ng
-           path: crosstool-ng
+       - name: 判断crosstool-ng编译
+         run: ./cross judge ct-ng
 
        - name: 准备crosstool-ng编译环境
-         if: env.CTNG_OK == 0 && success()
-         run: |
-            echo skip
-                 #sudo apt install gperf bison flex texinfo gawk libtool libncurses5-dev help2man -y
+         run: ./cross compile_prepare ct-ng
 
-       - name: 编译安装crosstool-ng
-         shell: bash
-         if: env.CTNG_OK == 0 && success()
-         run: |
-            pwd
-            ls
-            cd crosstool-ng
-            sudo apt install gperf bison flex texinfo gawk libtool libncurses5-dev help2man -y
-            ./bootstrap
-            ./configure --prefix=$CTNG_HOME
-            make -j4
-            make install -j4
-            which ct-ng && ct-ng list-samples
+       - name: 编译crosstool-ng
+         run: ./cross build_tool ct-ng
 
-       - name: test
-         run: |
-             pwd
-             ls
-             exit 1
+       - name: 安装crosstool-ng
+         run: ./cross install_tool ct-ng
+
+       - name: 测试crosstool-ng环境
+         run: ./cross test_tool ct-ng

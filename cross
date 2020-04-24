@@ -8,7 +8,104 @@ function app()
    case "$action" in
      "prepare") prepare $*;;
      "check") check $*;;
+     "judge") judge $*;;
+     "compile_prepare") compile_prepare $*;;
+     "build_tool") build_tool $*;;
+     "test_tool") test_tool $*;;
      *) echo not found action! $action; exit 1;;
+   esac
+}
+
+function test_tool()
+{
+   local flag=$1
+   shift
+   case "$flag" in
+     "ct-ng")
+         which ct-ng && ct-ng list-samples
+     ;;
+   esac
+}
+
+function install_tool()
+{
+   local flag=$1
+   shift
+   case "$flag" in
+     "ct-ng")
+	if [ $CTNG_OK -eq 0 ]; then
+	  if [ -e "$CTNG_BUILD" ] ; then
+	     cd $CTNG_BUILD
+             make install -j 4
+             add_github_path "$CTNG_HOME/bin"
+	  else
+	     echo "CTNG_BUILD not exist!"
+	  fi
+        else
+	  echo "crosstool-ng oK!" 
+	fi
+     ;;
+   esac
+}
+
+function build_tool()
+{
+   local flag=$1
+   shift
+   case "$flag" in
+     "ct-ng")
+	if [ $CTNG_OK -eq 0 ]; then
+	  if [ -e "$CTNG_REPO" ] ; then
+             cd $CTNG_REPO
+             ./bootstrap
+             ./configure --prefix=$CTNG_HOME
+             make -j 4
+	     set_github_env "CTNG_BUILD" "$(pwd)"
+	  else
+	     echo "CTNG_REPO not exist!"
+	  fi
+        else
+	  echo "crosstool-ng oK!" 
+	fi
+     ;;
+   esac
+}
+
+function compile_prepare()
+{
+   local flag=$1
+   shift
+   case "$flag" in
+     "ct-ng")
+	if [ $CTNG_OK -eq 0 ]; then
+	  if [ "$CTNG_REPO" != "" ] ; then
+             sudo apt install gperf bison flex texinfo gawk libtool     libncurses5-dev help2man -y
+	  else
+	    echo "CTNG_REPO empty!"
+	    exit 1
+          fi
+	else
+	  echo "crosstool-ng oK!" 
+	fi
+     ;;
+   esac
+}
+
+function judge()
+{
+   local flag=$1
+   shift
+   case "$flag" in
+     "ct-ng")
+	if [ $CTNG_OK -eq 0 ]; then
+	   local r="$(pwd)/build/crosstool-ng"
+	   mkdir -p $repo
+           git clone https://github.com/crosstool-ng/crosstool-ng $r -j 4
+           set_github_env "CTNG_REPO" "$r"
+	else
+	   echo "crosstool-ng Ok!"
+        fi
+     ;;
    esac
 }
 
@@ -18,12 +115,21 @@ function check()
    shift
    case "$flag" in
      "ct-ng") 
+	    local is_ok=0
             echo "CACHE_HIT: $CACHE_HIT"
-            export PATH=$PATH:$CTNG_HOME/bin
-            echo "CTNG_HOME: $CTNG_HOME"
-            echo "PATH: $PATH"
-            which ct-ng && echo "::add-path::$CTNG_HOME/bin"
-            which ct-ng || echo "::set-env name=CTNG_OK::1"
+	    if [ "$CACHE_HIT" == "true" ]; then
+               export PATH=$PATH:$CTNG_HOME/bin
+               which ct-ng > /dev/null 2>&1
+               if [ $? -eq 0 ]; then
+		  is_ok=1
+                  add_github_path "$CTNG_HOME/bin"
+	       else
+                  echo "ct-ng not exist!"
+	       fi
+	    else
+               echo "ct-ng cache miss!"
+	    fi
+            set_github_env "CTNG_OK" "$is_ok"
      ;;
    esac
 }
@@ -44,6 +150,13 @@ function set_github_env()
 {
   if [ $# -eq 2 ]; then
      echo "::set-env name=$1::$2"
+  fi
+}
+
+function add_github_path()
+{
+  if [ $# -eq 1 ]; then
+     echo "::add-path::$1"
   fi
 }
 
