@@ -6,7 +6,7 @@ function app()
    local action=$1
    shift
    case "$action" in
-     "prepare") preapre $*;;
+     "prepare") prepare $*;;
      "check") check $*;;
      *) echo not found action! $action; exit 1;;
    esac
