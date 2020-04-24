@@ -7,7 +7,7 @@
       "is_upload": "false"
    },
    "tool": {
-      "key": "aarch64-unknown-linux-android",
+      "key": "self-aarch64",
       "config": "./config/build.config",
       "is_upload": "true"
    },
