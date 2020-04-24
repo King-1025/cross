@@ -18,8 +18,6 @@ function check()
    shift
    case "$flag" in
      "ct-ng") 
-            echo "cache-hit: ${{ steps.cache.outputs.cache-hit }}"
-            echo "outputs: ${{ toJson(steps.cache.outputs) }}"
             echo "CACHE_HIT: $CACHE_HIT"
             export PATH=$PATH:$CTNG_HOME/bin
             echo "CTNG_HOME: $CTNG_HOME"
