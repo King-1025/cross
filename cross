@@ -11,6 +11,7 @@ function app()
      "judge") judge $*;;
      "compile_prepare") compile_prepare $*;;
      "build_tool") build_tool $*;;
+     "install_tool") install_tool $*;;
      "test_tool") test_tool $*;;
      *) echo not found action! $action; exit 1;;
    esac
@@ -40,6 +41,7 @@ function install_tool()
              add_github_path "$CTNG_HOME/bin"
 	  else
 	     echo "CTNG_BUILD not exist!"
+	     exit 1
 	  fi
         else
 	  echo "crosstool-ng oK!" 
@@ -59,10 +61,16 @@ function build_tool()
              cd $CTNG_REPO
              ./bootstrap
              ./configure --prefix=$CTNG_HOME
-             make -j 4
-	     set_github_env "CTNG_BUILD" "$(pwd)"
+	     if [ $? -eq 0 ]; then
+                make -j 4
+	        set_github_env "CTNG_BUILD" "$(pwd)"
+	     else
+	        echo "configure failed!"
+		exit 1
+	     fi
 	  else
 	     echo "CTNG_REPO not exist!"
+	     exit 1
 	  fi
         else
 	  echo "crosstool-ng oK!" 
