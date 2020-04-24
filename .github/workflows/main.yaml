@@ -8,7 +8,7 @@ jobs:
         run:
           shell: bash
      env:
-        CTNG_HOME: ${{env.HOME}}/.crosstool-ng
+        CTNG_HOME: $HOME/.crosstool-ng
      steps:
        - name: 检查crosstool-ng环境
          shell: bash
