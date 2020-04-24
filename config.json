@@ -7,7 +7,7 @@
    },
    "tool": {
       "key": "aarch64-unknown-linux-android",
-      "is_upload": "false"
+      "is_upload": "true"
    },
    "compile": {
       "script": "./test/build.sh",
