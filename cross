@@ -62,7 +62,10 @@ function build_tool()
      "tool")
 	if [ $TOOL_FLAG -eq 0 ]; then
 	   echo "TOOL_KEY: $TOOL_KEY"
-           ct-ng --help
+	   mkdir build && cd build
+           ct-ng $TOOL_KEY
+	   ct-ng build.4
+	   ls
 	else
 	  echo "cross tool oK!" 
 	fi
@@ -97,7 +100,7 @@ function compile_prepare()
    shift
    case "$flag" in
      "tool")
-	if [ $TOOL_OK -eq 0 ]; then
+	if [ $TOOL_FLAG -eq 0 ]; then
            which ct-ng
 	   if [ $? -eq 0 ]; then
               echo "prepare for tool..."
@@ -133,7 +136,7 @@ function judge()
 	if [ $CTNG_OK -eq 0 ]; then
 	   local r="$(pwd)/build/ct_ng"
 	   if [ "$CTNG_SRC" == "clone" ]; then
-              git clone https://github.com/crosstool-ng/crosstool-ng $r -j 4
+              git clone $CTNG_URL $r -j 4
 	   elif [ "$CTNG_SRC" == "release" ]; then
               echo "download crosstool-ng..."
 	   fi
@@ -199,9 +202,11 @@ function prepare()
      "ct-ng") 
 	 local key=$(jq .ctng.key $CONFIG -r)
 	 local src=$(jq .ctng.src $CONFIG -r)
+	 local url=$(jq .ctng.url $CONFIG -r)
 	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
 	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-$key"
 	 set_github_env "CTNG_SRC" "$src"
+	 set_github_env "CTNG_URL" "$url"
      ;;
      "tool") 
 	 local ctng_key=$(jq .ctng.key $CONFIG -r)

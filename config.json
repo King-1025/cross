@@ -1,7 +1,8 @@
 {
    "ctng": {
       "key": "last",
-      "src": "clone"
+      "src": "clone",
+      "url": "https://github.com/crosstool-ng/crosstool-ng"
    },
    "tool":{
       "key": "aarch64-unknown-linux-android"
