@@ -102,6 +102,9 @@ jobs:
            name: cross-tool
            path: /home/runner/.crosstool
 
+       - name: test
+         run: exit 1
+
   start-cross-compile:
      name: 开始交叉编译
      needs: prepare-cross-tool

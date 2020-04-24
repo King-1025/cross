@@ -58,8 +58,9 @@ function install_tool()
 	if [ $TOOL_FLAG -eq 0 ]; then
 	  if [ -e "$TOOL_BUILD" ] ; then
 	     cd $TOOL_BUILD
-             ls
-	     exit 1
+	     ls -a -l -h
+	     ls -a -l -h $CTNG_HOME
+	     mv .config $TOOL_HOME
 	  else
 	     echo "TOOL_BUILD not exist! $TOOL_BUILD"
 	     exit 1
@@ -96,8 +97,6 @@ function build_tool()
 	   mkdir build && cd build
            ct-ng $TOOL_KEY
 	  # ct-ng build.4
-	   ls -a -l
-	   ls -a -l $CTNG_HOME
 	   set_github_env "TOOL_BUILD" "$(pwd)"
 	else
 	  echo "cross tool oK!" 
