@@ -16,7 +16,7 @@ jobs:
             export PATH=$PATH:$CTNG_HOME/bin
             echo "CTNG_HOME: $CTNG_HOME"
             echo "PATH: $PATH"
-            which ct-ng && echo "::add-path::$CTNG_HOME/bin"
+            which ct-ng || echo "::add-path::$CTNG_HOME/bin"
             which ct-ng || echo "::set-env name=CTNG_OK::1"
        - name: test
          run: |
