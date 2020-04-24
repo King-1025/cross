@@ -59,13 +59,13 @@ function build_tool()
 	if [ $CTNG_OK -eq 0 ]; then
 	  if [ -e "$CTNG_REPO" ] ; then
              cd $CTNG_REPO
-             ./bootstrap
-             ./configure --prefix=$CTNG_HOME
+             ./bootstrap && ./configure --prefix=$CTNG_HOME
 	     if [ $? -eq 0 ]; then
                 make -j 4
 	        set_github_env "CTNG_BUILD" "$(pwd)"
 	     else
 	        echo "configure failed!"
+		./configure --help
 		exit 1
 	     fi
 	  else
@@ -106,8 +106,8 @@ function judge()
    case "$flag" in
      "ct-ng")
 	if [ $CTNG_OK -eq 0 ]; then
-	   local r="$(pwd)/build/crosstool-ng"
-	   mkdir -p $repo
+	   local r="$(pwd)/build/ct_ng"
+	   mkdir -p "$r"
            git clone https://github.com/crosstool-ng/crosstool-ng $r -j 4
            set_github_env "CTNG_REPO" "$r"
 	else
