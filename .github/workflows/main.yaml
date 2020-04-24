@@ -43,6 +43,7 @@ jobs:
 
   cross-tool:
      name: 准备交叉编译工具
+     needs: prepare-crosstool-ng
      runs-on: ubuntu-latest
      defaults:
         run:
