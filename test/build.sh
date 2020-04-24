@@ -3,7 +3,7 @@
 ROOT=$(pwd)
 RESULT=$ROOT/result
 
-CC=gcc
+CC=aarch64-unknown-linux-android-gcc
 
 mkdir -p $RESULT
 

@@ -31,7 +31,7 @@ function exec_script()
       if [ -e $sc ]; then
          $sc
 	 echo "RESULT: $re"
-	 exit 1
+         tree -a -L 3 -h $re
       else
 	 echo "not found script! $sc"
 	 exit 1
@@ -76,7 +76,7 @@ function install_tool()
                 mkdir -p $TOOL_HOME
 	     fi
 	     echo ""
-	     cp .config $TOOL_HOME/build.config
+	     sudo cp .config $TOOL_HOME/build.config
 	     tree -a -L 3 -h $TOOL_HOME
 	     echo ""
 	     echo "$TOOL_HOME/build.config"
@@ -237,8 +237,6 @@ function check()
 	    fi
 	fi
         set_github_env "COMPILE_FLAG" "$flag"
-	echo "pass..."
-	exit 1
      ;;
      "tool")
 	local flag=0
