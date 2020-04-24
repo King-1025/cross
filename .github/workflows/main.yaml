@@ -40,3 +40,17 @@ jobs:
 
        - name: 测试crosstool-ng环境
          run: ./cross test_tool ct-ng
+
+  cross-tool:
+     name: 准备交叉编译工具
+     runs-on: ubuntu-latest
+     defaults:
+        run:
+          shell: bash
+     steps:
+       - name: test
+         run: |
+            pwd
+            ls
+            env
+
