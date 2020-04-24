@@ -42,12 +42,13 @@ jobs:
          run: ./cross test_tool ct-ng
 
        - name: 上传文件
+         if: env.IS_UPLOAD == 'true'
          uses: actions/upload-artifact@v1
          with:
            name: ct-ng
            path: /home/runner/.crosstool-ng
 
-  cross-tool:
+  prepare-cross-tool:
      name: 准备交叉编译工具
      needs: prepare-crosstool-ng
      runs-on: ubuntu-latest
@@ -91,9 +92,52 @@ jobs:
        - name: 编译cross tool
          run: ./cross build_tool tool
 
-       - name: 
-         run: |
-            pwd
-            ls
-            env
-            exit 1
+       - name: 安装cross tool 
+         run: ./cross install_tool tool
+
+       - name: 上传文件
+         if: env.IS_UPLOAD == 'true'
+         uses: actions/upload-artifact@v1
+         with:
+           name: cross-tool
+           path: /home/runner/.crosstool
+
+  start-cross-compile:
+     name: 开始交叉编译
+     needs: prepare-cross-tool
+     runs-on: ubuntu-latest
+     defaults:
+        run:
+          shell: bash
+     steps:
+       - name: 检索cross仓库
+         uses: actions/checkout@v2
+
+       - name: 初始化
+         run: ./cross prepare compile
+
+       - name: 检查交叉编译工具缓存
+         uses: actions/cache@v1
+         id: cache
+         with:
+            path: ${{ env.TOOL_HOME }}
+            key: ${{ runner.os }}-${{ env.TOOL_CACHE_KEY }}
+
+       - name: 下载cross tool
+         if: steps.cache.outputs.cache-hit != 'true'
+         uses: actions/download-artifact@v1
+         with:
+           name: cross-tool
+
+       - name: 检查编译环境
+         run: ./cross check compile
+
+       - name: 执行编译脚本
+         run: ./cross script
+
+       - name: 上传结果
+         if: env.IS_UPLOAD == 'true'
+         uses: actions/upload-artifact@v1
+         with:
+           name: result
+           path: result

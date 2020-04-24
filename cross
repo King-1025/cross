@@ -14,10 +14,27 @@ function app()
      "judge") judge $*;;
      "compile_prepare") compile_prepare $*;;
      "build_tool") build_tool $*;;
+     "script") exec_script;;
      "install_tool") install_tool $*;;
      "test_tool") test_tool $*;;
      *) echo not found action! $action; exit 1;;
    esac
+}
+
+function exec_script()
+{
+   if [ $COMPILE_FLAG -eq 1 ]; then
+      local sc=$COMPILE_SCRIPT
+      local re=$COMPILE_RESULT
+      if [ -e $sc ]; then
+         $sc
+	 echo "RESULT: $re"
+	 exit 1
+      else
+	 echo "not found script! $sc"
+	 exit 1
+      fi
+   fi
 }
 
 function test_tool()
@@ -37,6 +54,20 @@ function install_tool()
    local flag=$1
    shift
    case "$flag" in
+     "tool")
+	if [ $TOOL_FLAG -eq 0 ]; then
+	  if [ -e "$TOOL_BUILD" ] ; then
+	     cd $TOOL_BUILD
+             ls
+	     exit 1
+	  else
+	     echo "TOOL_BUILD not exist! $TOOL_BUILD"
+	     exit 1
+	  fi
+	else
+	  echo "cross tool oK!" 
+	fi
+     ;;
      "ct-ng")
 	if [ $CTNG_OK -eq 0 ]; then
 	  if [ -e "$CTNG_BUILD" ] ; then
@@ -44,7 +75,7 @@ function install_tool()
              make install -j 4
              add_github_path "$CTNG_HOME/bin"
 	  else
-	     echo "CTNG_BUILD not exist!"
+	     echo "CTNG_BUILD not exist! $CTNG_BUILD"
 	     exit 1
 	  fi
         else
@@ -65,7 +96,7 @@ function build_tool()
 	   mkdir build && cd build
            ct-ng $TOOL_KEY
 	   ct-ng build.4
-	   ls
+	   set_github_env "TOOL_BUILD" "$(pwd)"
 	else
 	  echo "cross tool oK!" 
 	fi
@@ -153,6 +184,26 @@ function check()
    local flag=$1
    shift
    case "$flag" in
+     "compile")
+	local flag=0
+        if [ -e $TOOL_HOME ]; then
+             add_github_path "$TOOL_HOME/bin"
+	     flag=1
+	else
+	    local path="$(pwd)/cross-tool"
+	    if [ -e $path ]; then
+	       mv $path $TOOL_HOME
+               add_github_path "$TOOL_HOME/bin"
+	       flag=1
+	    else
+	       echo "not found cross tool!"
+	       exit 1
+	    fi
+	fi
+        set_github_env "COMPILE_FLAG" "$flag"
+	echo "pass..."
+	exit 1
+     ;;
      "tool")
 	local flag=0
         if [ -e $TOOL_HOME ]; then
@@ -164,7 +215,8 @@ function check()
 	  else
 	    local path="$(pwd)/ct-ng"
 	    if [ -e $path ]; then
-               add_github_path "$path"
+	       mv $path $CTNG_HOME
+               add_github_path "$CTNG_HOME/bin"
 	    else
 	       echo "not found tool and ct-ng!"
 	       exit 1
@@ -203,20 +255,37 @@ function prepare()
 	 local key=$(jq .ctng.key $CONFIG -r)
 	 local src=$(jq .ctng.src $CONFIG -r)
 	 local url=$(jq .ctng.url $CONFIG -r)
+	 local isu=$(jq .ctng.is_upload $CONFIG -r)
 	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
 	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-$key"
-	 set_github_env "CTNG_SRC" "$src"
-	 set_github_env "CTNG_URL" "$url"
+	 set_github_env "CTNG_SRC"  "$src"
+	 set_github_env "CTNG_URL"  "$url"
+	 set_github_env "IS_UPLOAD" "$isu"
      ;;
      "tool") 
 	 local ctng_key=$(jq .ctng.key $CONFIG -r)
 	 local tool_key=$(jq .tool.key $CONFIG -r)
+	 local isu=$(jq .tool.is_upload $CONFIG -r)
+	 set_github_env "TOOL_HOME" "$HOME/.crosstool"
+	 set_github_env "TOOL_CACHE_KEY" "tool-$tool_key"
+	 set_github_env "TOOL_KEY" "$tool_key"
+	 set_github_env "IS_UPLOAD" "$isu"
+
+	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
+	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-$ctng_key"
+     ;;
+     "compile")
+	 local tool_key=$(jq .tool.key $CONFIG -r)
+	 local script=$(jq .compile.script $CONFIG -r)
+	 local result=$(jq .compile.result $CONFIG -r)
+	 local isu=$(jq .compile.is_upload $CONFIG -r)
 	 set_github_env "TOOL_HOME" "$HOME/.crosstool"
 	 set_github_env "TOOL_CACHE_KEY" "tool-$tool_key"
 	 set_github_env "TOOL_KEY" "$tool_key"
 
-	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
-	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-$ctng_key"
+	 set_github_env "COMPILE_SCRIPT" "$script"
+	 set_github_env "COMPILE_RESULT" "$result"
+	 set_github_env "IS_UPLOAD" "$isu"
      ;;
    esac
 }

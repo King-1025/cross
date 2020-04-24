@@ -2,9 +2,15 @@
    "ctng": {
       "key": "last",
       "src": "clone",
-      "url": "https://github.com/crosstool-ng/crosstool-ng"
+      "url": "https://github.com/crosstool-ng/crosstool-ng",
+      "is_upload": "false"
    },
-   "tool":{
-      "key": "aarch64-unknown-linux-android"
+   "tool": {
+      "key": "aarch64-unknown-linux-android",
+      "is_upload": "false"
+   },
+   "compile": {
+      "script": "./test/build.sh",
+      "result": "./test/hello"
    }
 }
