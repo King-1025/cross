@@ -11,6 +11,9 @@ jobs:
         CTNG_HOME: /home/runner/.crosstool-ng
 
      steps:
+       - name: 检索cross仓库
+         uses: actions/checkout@v2
+
        - name: 检查crosstool-ng缓存
          uses: actions/cache@v1
          id: cache
@@ -28,8 +31,7 @@ jobs:
          shell: bash
          run: |
             echo "cache-hit: ${{ steps.cache.outputs.cache-hit }}"
-            echo "test: ${{ steps.cache.outputs.test }}"
-            echo "outputs: ${{ steps.cache.outputs }}"
+            echo "outputs: ${{ toJson(steps.cache.outputs) }}"
             export PATH=$PATH:$CTNG_HOME/bin
             echo "CTNG_HOME: $CTNG_HOME"
             echo "PATH: $PATH"
@@ -46,7 +48,7 @@ jobs:
        - name: 准备crosstool-ng编译环境
          if: env.CTNG_OK == 0 && success()
          run: |
-            sudo apt-get install gperf bison flex texinfo gawk libtool libncurses5-dev help2man
+            sudo apt-get install gperf bison flex texinfo gawk libtool libncurses5-dev help2man libtool
 
        - name: 编译安装crosstool-ng
          shell: bash
