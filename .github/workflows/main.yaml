@@ -8,11 +8,12 @@ jobs:
         run:
           shell: bash
      env:
-        CTNG_HOME: {{env.HOME}}/.crosstool-ng
+        CTNG_NAME: .crosstool-ng
      steps:
        - name: 检查crosstool-ng环境
          shell: bash
          run: |
+            echo "::set-env name=CTNG_HOME::$HOME/$CTNG_NAME"
             echo "::add-path::$CTNG_HOME/bin"
             echo "CTNG_HOME: $CTNG_HOME"
             echo "PATH: $PATH"
