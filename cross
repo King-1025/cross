@@ -45,7 +45,7 @@ function test_tool()
    shift
    case "$flag" in
      "ct-ng")
-         which ct-ng && ct-ng list-samples
+         # which ct-ng && ct-ng list-samples
 	 echo "CTNG_HOME: $CTNG_HOME" 
      ;;
    esac
@@ -165,13 +165,14 @@ function compile_prepare()
 {
    local flag=$1
    shift
-   sudo apt install tree -y
    case "$flag" in
      "compile")
+        sudo apt install tree -y
 	echo skip!
      ;;
      "tool")
 	if [ $TOOL_FLAG -eq 0 ]; then
+           sudo apt install tree -y
            which ct-ng
 	   if [ $? -eq 0 ]; then
               echo "prepare for tool..."
@@ -186,7 +187,7 @@ function compile_prepare()
      "ct-ng")
 	if [ $CTNG_OK -eq 0 ]; then
 	  if [ "$CTNG_REPO" != "" ] ; then
-             sudo apt install gperf bison flex texinfo gawk libtool libtool-bin libncurses5-dev help2man -y
+             sudo apt install gperf bison flex texinfo gawk libtool libtool-bin libncurses5-dev help2man tree -y
 	  else
 	    echo "CTNG_REPO empty!"
 	    exit 1
@@ -287,7 +288,6 @@ function prepare()
 {
    local flag=$1
    shift
-   sudo apt install jq -y
    case "$flag" in
      "ct-ng") 
 	 local key=$(jq .ctng.key $CONFIG -r)
