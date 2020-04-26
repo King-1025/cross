@@ -167,6 +167,9 @@ function compile_prepare()
    shift
    sudo apt install tree -y
    case "$flag" in
+     "compile")
+	echo skip!
+     ;;
      "tool")
 	if [ $TOOL_FLAG -eq 0 ]; then
            which ct-ng
