@@ -31,6 +31,7 @@ function exec_script()
       if [ -e $sc ]; then
          $sc
 	 echo "RESULT: $re"
+	 echo ""
          tree -a -L 3 -h $re
       else
 	 echo "not found script! $sc"
@@ -167,12 +168,10 @@ function compile_prepare()
    shift
    case "$flag" in
      "compile")
-        sudo apt install tree -y
 	echo skip!
      ;;
      "tool")
 	if [ $TOOL_FLAG -eq 0 ]; then
-           sudo apt install tree -y
            which ct-ng
 	   if [ $? -eq 0 ]; then
               echo "prepare for tool..."
@@ -187,7 +186,7 @@ function compile_prepare()
      "ct-ng")
 	if [ $CTNG_OK -eq 0 ]; then
 	  if [ "$CTNG_REPO" != "" ] ; then
-             sudo apt install gperf bison flex texinfo gawk libtool libtool-bin libncurses5-dev help2man tree -y
+             sudo apt install gperf bison flex texinfo gawk libtool libtool-bin libncurses5-dev help2man -y
 	  else
 	    echo "CTNG_REPO empty!"
 	    exit 1
@@ -288,6 +287,7 @@ function prepare()
 {
    local flag=$1
    shift
+   add_github_path "$ROOT/tool/bin"
    case "$flag" in
      "ct-ng") 
 	 local key=$(jq .ctng.key $CONFIG -r)
