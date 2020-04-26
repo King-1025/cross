@@ -9,7 +9,10 @@ mkdir -p $RESULT
 
 $CC -pie -fPIC -Wall $ROOT/test/hello.c -o $ROOT/test/hello
 
-$CC --your-cflags-except-sysroot -print-sysroot
+echo ""
+$CC -print-sysroot
 
-aarch64-unknown-linux-android-populate -s $ROOT/test -d $RESULT -v
+aarch64-unknown-linux-android-populate -s $ROOT/test -d $RESULT -v -f
 
+$CC --help
+echo ""
