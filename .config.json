@@ -12,7 +12,7 @@
       "is_upload": "false"
    },
    "compile": {
-      "script": "./test/build.sh",
+      "script": "./stage/build.sh",
       "is_upload": "true"
    }
 }
