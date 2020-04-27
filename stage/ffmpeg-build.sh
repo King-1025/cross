@@ -6,6 +6,12 @@ HOST=aarch64-unknown-linux-android
 
 #${HOST}-populate
 
+
+which $HOST-gcc
+
+$HOST-gcc --help
+echo ""
+
 URL=https://ffmpeg.org/releases/ffmpeg-4.2.2.tar.bz2
 FILE=ffmpeg.tar.bz2
 
@@ -13,7 +19,7 @@ wget $URL -O $FILE
 
 [[ ! -e ffmpeg ]] && mkdir ffmpeg
 
-tar -xavf $FILE -C ffmpeg && rm -rf $FILE
+tar -xaf $FILE -C ffmpeg && rm -rf $FILE
 
 cd ffmpeg
 
