@@ -3,11 +3,14 @@
 ROOT=(pwd)
 RESULT=$ROOT/result
 HOST=aarch64-unknown-linux-android
+STRIP=$(which $HOST-strip)
 
-#${HOST}-populate
+CROSS_PREFIX="$TOOL_HOME/bin/$HOST-"
 
 URL=https://ffmpeg.org/releases/ffmpeg-4.2.2.tar.bz2
 FILE=ffmpeg.tar.bz2
+
+#${HOST}-populate
 
 wget $URL -O $FILE
 
@@ -24,8 +27,8 @@ $CONFIGURE \
 --arch=aarch64 \
 --cpu=armv8-a \
 --target-os=linux \
---cross-prefix=$HOST- \
---strip=$HOST-strip  \
+--cross-prefix=$CROSS_PREFIX \
+--strip=$STRIP \
 --enable-pic \
 --enable-mmx \
 --prefix=$RESULT \
