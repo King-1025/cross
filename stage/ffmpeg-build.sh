@@ -2,7 +2,7 @@
 
 ROOT=(pwd)
 RESULT=$ROOT/result
-HOST=aarch64-unknown-linux-android
+#HOST=aarch64-unknown-linux-android
 #HOST=aarch64-linux-gnu
 
 STRIP=$HOST-strip
