@@ -3,16 +3,17 @@
 ROOT=(pwd)
 RESULT=$ROOT/result
 HOST=aarch64-unknown-linux-android
-STRIP=$(which $HOST-strip)
+#HOST=aarch64-linux-gnu
 
-CROSS_PREFIX="$TOOL_HOME/bin/$HOST-"
+STRIP=$HOST-strip
+CROSS_PREFIX="$HOST-"
 
 URL=https://ffmpeg.org/releases/ffmpeg-4.2.2.tar.bz2
 FILE=ffmpeg.tar.bz2
 
 #${HOST}-populate
 
-wget $URL -O $FILE
+wget -q $URL -O $FILE
 
 [[ ! -e ffmpeg ]] && mkdir ffmpeg
 
