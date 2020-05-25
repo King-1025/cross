@@ -9,8 +9,8 @@ RESULT=$ROOT/result
 
 cd openssl
 
-./config -h
+#./config -h
 
-#./Configure android64-aarch64  -D__ANDROID_API__=21 --prefix=$RESULT --cross-compile-prefix=aarch64-unknown-linux-android-
+CC=gcc CROSS_COMPILE=aarch64-unknown-linux-android- ./config -D__ANDROID_API__=21 --prefix=$RESULT
 
 make -j 4 && make install
