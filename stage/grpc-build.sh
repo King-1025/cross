@@ -36,7 +36,7 @@ STAGE=/tmp/aarch64_stage
 TOOLCHAIN_CMAKE=/tmp/toolchain.cmake
 SYSROOT=$($CC -print-sysroot)
 
-ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/libpthread.so
+sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/libpthread.so
 
 # Write a toolchain file to use for cross-compiling.
 cat > $TOOLCHAIN_CMAKE << EOF
