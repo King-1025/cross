@@ -2,7 +2,7 @@
 
 set -ex
 
-ROOT=(pwd)
+ROOT=$(pwd)
 GRPC=$ROOT/grpc
 RESULT=$ROOT/result
 
