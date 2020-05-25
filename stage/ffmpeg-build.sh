@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+grep -r stdout $TOOL_HOME
+exit 1
+
 ROOT=$(pwd)
 RESULT=$ROOT/result
 HOST=aarch64-unknown-linux-android
