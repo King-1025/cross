@@ -41,10 +41,11 @@ $CONFIGURE \
 --enable-demuxers \
 --enable-protocols \
 --pkg-config=true \
---extra-cflags="-fPIC" \
---extra-ldflags="-lssl" 
+--extra-cflags="-fPIC"
 EOF
 )
+
+# --extra-ldflags="-lssl" 
 
 echo ""
 echo $COMMAND && eval $COMMAND
