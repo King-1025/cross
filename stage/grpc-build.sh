@@ -32,7 +32,8 @@ popd
 
 CC=aarch64-unknown-linux-android-gcc
 CXX=aarch64-unknown-linux-android-g++
-STAGE=/tmp/aarch64_stage
+#STAGE=/tmp/aarch64_stage
+STAGE=$RESULT/aarch64_stage
 TOOLCHAIN_CMAKE=/tmp/toolchain.cmake
 SYSROOT=$($CC -print-sysroot)
 
@@ -65,8 +66,8 @@ cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
 make -j 4 install
 popd
 
-mkdir -p "examples/cpp/helloworld/cmake/raspberrypi_build"
-pushd "examples/cpp/helloworld/cmake/raspberrypi_build"
+mkdir -p "examples/cpp/helloworld/cmake/aarch64_build"
+pushd "examples/cpp/helloworld/cmake/aarch64_build"
 cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
       -DCMAKE_BUILD_TYPE=Release \
       -DProtobuf_DIR=$STAGE/lib/cmake/protobuf \
