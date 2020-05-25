@@ -13,7 +13,7 @@ FILE=ffmpeg.tar.bz2
 
 #${HOST}-populate
 
-[[ ! -e ffmpeg ]] && wget $URL -O $FILE && mkdir ffmpeg && tar -xaf $FILE -C ffmpeg && rm -rf $FILE
+[[ ! -e ffmpeg ]] && wget -q $URL -O $FILE && mkdir ffmpeg && tar -xaf $FILE -C ffmpeg && rm -rf $FILE
 
 cd ffmpeg
 
@@ -35,7 +35,6 @@ $CONFIGURE \
 --enable-cross-compile \
 --enable-stripping \
 --enable-network \
---enable-openssl \
 --enable-swscale \
 --enable-decoders \
 --enable-demuxers \
@@ -45,6 +44,7 @@ $CONFIGURE \
 EOF
 )
 
+# --enable-openssl \
 # --extra-ldflags="-lssl" 
 
 echo ""
