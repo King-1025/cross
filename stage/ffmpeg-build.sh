@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-grep -r stdout $TOOL_HOME
+grep -r __ANDROID_API__ $TOOL_HOME
 exit 1
 
 ROOT=$(pwd)
