@@ -5,7 +5,7 @@ set -ex
 ROOT=$(pwd)
 RESULT=$ROOT/result
 
-[ ! -e openssl ] && git clone https://github.com/yourname/openssl.git openssl -j 4
+[ ! -e openssl ] && git clone https://github.com/openssl/openssl.git openssl -j 4
 
 cd openssl
 
