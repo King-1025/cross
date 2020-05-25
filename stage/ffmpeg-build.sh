@@ -19,6 +19,8 @@ cd ffmpeg
 
 CONFIGURE=$(find $(pwd) -name configure -print)
 
+sed -i "s/# FFmpeg configure script.*/set -x/g" $CONFIGURE
+
 COMMAND=$(cat << EOF
 $CONFIGURE \
 --arch=aarch64 \
