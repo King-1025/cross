@@ -2,10 +2,10 @@
 
 ROOT=(pwd)
 RESULT=$ROOT/result
-#HOST=aarch64-unknown-linux-android
+HOST=aarch64-unknown-linux-android
 #HOST=aarch64-linux-gnu
 
-STRIP=$HOST-strip
+STRIP="$HOST-strip"
 CROSS_PREFIX="$HOST-"
 
 URL=https://ffmpeg.org/releases/ffmpeg-4.2.2.tar.bz2
