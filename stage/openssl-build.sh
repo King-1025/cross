@@ -3,7 +3,7 @@
 set -ex
 
 ROOT=$(pwd)
-RESULT=$ROOT/result
+RESULT=$TOOL_HOME
 
 [ ! -e openssl ] && git clone https://github.com/openssl/openssl.git openssl -j 4
 
