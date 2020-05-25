@@ -61,6 +61,8 @@ pushd "cmake/aarch64_build"
 cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=$RESULT \
+      -DBUILD_SHARED_LIBS=ON \
+      -DgRPC_INSTALL=ON \
       -D__ANDROID_API__=21 \
       ../..
 make -j 4 install
