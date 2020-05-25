@@ -37,6 +37,7 @@ TOOLCHAIN_CMAKE=/tmp/toolchain.cmake
 SYSROOT=$($CC -print-sysroot)
 
 sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/libpthread.so
+sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/librt.so
 
 # Write a toolchain file to use for cross-compiling.
 cat > $TOOLCHAIN_CMAKE << EOF
