@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-grep -r __ANDROID_API__ $TOOL_HOME
-exit 1
+#grep -r __ANDROID_API__ $TOOL_HOME
+#exit 1
 
 ROOT=$(pwd)
 RESULT=$ROOT/result
@@ -33,7 +33,7 @@ sed -i "s/B0/b0/g" $(find $(pwd) -name "opus_pvq.c" -print)
 COMMAND=$(cat << EOF
 $CONFIGURE \
 --arch=aarch64 \
---target-os=linux \
+--target-os=android \
 --cc=${HOST}-gcc \
 --cross-prefix=$CROSS_PREFIX \
 --strip=$STRIP \
@@ -49,7 +49,9 @@ $CONFIGURE \
 --enable-demuxers \
 --enable-protocols \
 --pkg-config=true \
---extra-cflags="-fPIC"
+--extra-cflags="-fPIC" \
+--extra-cflags="-D__ANDROID_API__=21" \
+--extra-cflags="-mfloat-abi=softfp" 
 EOF
 )
 
