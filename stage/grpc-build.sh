@@ -39,7 +39,7 @@ SYSROOT=$($CC -print-sysroot)
 # Write a toolchain file to use for cross-compiling.
 cat > $TOOLCHAIN_CMAKE << EOF
 set(CMAKE_SYSTEM_NAME Linux)
-set(CMAKE_SYSTEM_PROCESSOR arm)
+set(CMAKE_SYSTEM_PROCESSOR aarch64)
 set(CMAKE_STAGING_PREFIX $STAGE)
 set(CMAKE_SYSROOT $SYSROOT)
 set(CMAKE_C_COMPILER $CC)
