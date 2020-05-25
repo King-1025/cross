@@ -6,9 +6,7 @@ HOST=aarch64-unknown-linux-android
 #HOST=aarch64-linux-gnu
 
 STRIP="$HOST-strip"
-CROSS_PREFIX="$TOOL_HOME/bin/${HOST}-"
-
-${CROSS_PREFIX}cc -h
+CROSS_PREFIX="${HOST}-"
 
 URL=https://ffmpeg.org/releases/ffmpeg-4.2.2.tar.bz2
 FILE=ffmpeg.tar.bz2
@@ -25,11 +23,14 @@ cd ffmpeg
 
 CONFIGURE=$(find $(pwd) -name configure -print)
 
+#  ./configure --cross-prefix=arm-none-linux-gnueabi- --enable-cross-compile   --prefix=/usr/local/ffmpeg --enable-shared --disable-static --enable-gpl --enable-nonfree --enable-ffmpeg --disable-ffplay --enable-ffserver --enable-swscale --enable-pthreads --disable-armv5te --disable-armv6 --disable-armv6t2 --disable-yasm --disable-stripping --enable-libx264 
+
+
 COMMAND=$(cat << EOF
 $CONFIGURE \
---arch=aarch64 \
---cpu=armv8-a \
+--arch=arm \
 --target-os=linux \
+--cc=${HOST}-gcc \
 --cross-prefix=$CROSS_PREFIX \
 --strip=$STRIP \
 --enable-pic \
