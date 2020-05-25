@@ -25,6 +25,8 @@ sed -i "s/B0/b0/g" $(find $(pwd) -name "aaccoder.c" -print)
 
 sed -i "s/B0/b0/g" $(find $(pwd) -name "hevc_mvs.c" -print)
 
+sed -i "s/B0/b0/g" $(find $(pwd) -name "opus_pvq.c" -print)
+
 COMMAND=$(cat << EOF
 $CONFIGURE \
 --arch=aarch64 \
