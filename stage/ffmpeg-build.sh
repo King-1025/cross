@@ -61,3 +61,9 @@ echo ""
 echo $COMMAND && eval $COMMAND
 echo ""
 make -j 4 && make install
+
+echo package libffmpeg.so
+
+SYSROOT=$(${HOST}-gcc -print-sysroot)
+
+${HOST}-ld -rpath-link=$SYSROOT/usr/lib -L$SYSROOT/usr/lib -L$RESULT/lib -soname libffmpeg.so -shared -nostdlib -Bsymbolic --whole-archive --no-undefined -o $RESULT/lib/libffmpeg.so libavcodec.a libavfilter.a libavformat.a libavutil.a libswresample.a libswscale.a -lc -lm -lz -ldl -llog --dynamic-linker=/system/bin/linker64 $(find $TOOL_HOME -name libgcc.a -print)
