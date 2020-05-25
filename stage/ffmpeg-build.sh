@@ -21,7 +21,7 @@ CONFIGURE=$(find $(pwd) -name configure -print)
 
 # sed -i "s/# FFmpeg configure script.*/set -x/g" $CONFIGURE
 
-sed -i "s/B0/b0/g" src/libavcodec/aaccoder.c
+sed -i "s/B0/b0/g" $(find $(pwd) -name "libavcodec/aaccoder.c" -print)
 
 COMMAND=$(cat << EOF
 $CONFIGURE \
