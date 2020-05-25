@@ -48,8 +48,8 @@ set(CMAKE_STAGING_PREFIX $STAGE)
 set(CMAKE_SYSROOT $SYSROOT)
 set(CMAKE_C_COMPILER $CC)
 set(CMAKE_CXX_COMPILER $CXX)
-set(CMAKE_C_FLAGS "-D__ANDROID_API__=21 -llog -landroid")
-set(CMAKE_CXX_FLAGS "-D__ANDROID_API__=21 -llog -landroid")
+set(CMAKE_C_FLAGS "-D__ANDROID_API__=21 -llog -landroid -fPIE -pie")
+set(CMAKE_CXX_FLAGS "-D__ANDROID_API__=21 -llog -landroid -fPIE -pie")
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
@@ -75,5 +75,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
       -DCMAKE_INSTALL_PREFIX=$RESULT \
       -D__ANDROID_API__=21 \
       ../..
-make -j 4 install
+make -j 4
 popd
+
+mv examples/cpp/helloworld/cmake/aarch64_build $RESULT
