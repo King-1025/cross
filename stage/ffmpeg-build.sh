@@ -33,7 +33,7 @@ sed -i "s/B0/b0/g" $(find $(pwd) -name "opus_pvq.c" -print)
 COMMAND=$(cat << EOF
 $CONFIGURE \
 --arch=aarch64 \
---target-os=android \
+--target-os=linux \
 --cc=${HOST}-gcc \
 --cross-prefix=$CROSS_PREFIX \
 --strip=$STRIP \
