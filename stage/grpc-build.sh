@@ -55,6 +55,7 @@ pushd "cmake/aarch64_build"
 cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=$RESULT \
+      -D__ANDROID_API__=21 \
       ../..
 make -j 4 install
 popd
@@ -66,6 +67,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
       -DProtobuf_DIR=$STAGE/lib/cmake/protobuf \
       -DgRPC_DIR=$STAGE/lib/cmake/grpc \
       -DCMAKE_INSTALL_PREFIX=$RESULT \
+      -D__ANDROID_API__=21 \
       ../..
 make -j 4 install
 popd
