@@ -3,7 +3,7 @@
 ROOT=$(pwd)
 RESULT=$ROOT/result
 HOST=aarch64-unknown-linux-android
-#HOST=aarch64-linux-gnu
+#HOST=aarch64-linux-android
 
 STRIP="$HOST-strip"
 CROSS_PREFIX="${HOST}-"
@@ -13,22 +13,15 @@ FILE=ffmpeg.tar.bz2
 
 #${HOST}-populate
 
-wget -q $URL -O $FILE
-
-[[ ! -e ffmpeg ]] && mkdir ffmpeg
-
-tar -xaf $FILE -C ffmpeg && rm -rf $FILE
+[[ ! -e ffmpeg ]] && wget $URL -O $FILE && mkdir ffmpeg && tar -xaf $FILE -C ffmpeg && rm -rf $FILE
 
 cd ffmpeg
 
 CONFIGURE=$(find $(pwd) -name configure -print)
 
-#  ./configure --cross-prefix=arm-none-linux-gnueabi- --enable-cross-compile   --prefix=/usr/local/ffmpeg --enable-shared --disable-static --enable-gpl --enable-nonfree --enable-ffmpeg --disable-ffplay --enable-ffserver --enable-swscale --enable-pthreads --disable-armv5te --disable-armv6 --disable-armv6t2 --disable-yasm --disable-stripping --enable-libx264 
-
-
 COMMAND=$(cat << EOF
 $CONFIGURE \
---arch=arm \
+--arch=aarch64 \
 --target-os=linux \
 --cc=${HOST}-gcc \
 --cross-prefix=$CROSS_PREFIX \
