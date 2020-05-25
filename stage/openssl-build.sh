@@ -17,4 +17,4 @@ export ANDROID_NDK_ROOT=$TOOL_HOME
 
 make -j 4
 
-sudo make install
+sudo export PATH=$PATH:$TOOL_HOME/bin && make install
