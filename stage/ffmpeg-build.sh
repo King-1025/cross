@@ -50,7 +50,7 @@ $CONFIGURE \
 --enable-protocols \
 --pkg-config=true \
 --extra-cflags="-fPIC" \
---extra-cflags="-D__ANDROID_API__=21" \
+--extra-cflags="-D__ANDROID_API__=21" 
 EOF
 )
 
