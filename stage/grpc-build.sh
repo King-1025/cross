@@ -10,7 +10,7 @@ function app()
 {
    get_repo
    install_cmake
-#   build_host_grpc
+   build_host_grpc
    cmake2_cross_compile_grpc
    #fix_so
    #cross_compile_grpc
@@ -162,9 +162,10 @@ popd
 
 function build_hello_world()
 {
+   cd $GRPC
    mkdir -p "examples/cpp/helloworld/cmake/aarch64_build"
    pushd "examples/cpp/helloworld/cmake/aarch64_build"
-   cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
+   cmake -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
       -DCMAKE_BUILD_TYPE=Release \
       -DProtobuf_DIR=$STAGE/lib/cmake/protobuf \
       -DgRPC_DIR=$STAGE/lib/cmake/grpc \
