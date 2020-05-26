@@ -15,7 +15,7 @@
       "arch": "arm64"
    },
    "compile": {
-      "script": "./test/build.sh",
+      "script": "./stage/openssl-build.sh",
       "is_upload": "true"
    }
 }
