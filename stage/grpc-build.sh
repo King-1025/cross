@@ -17,8 +17,9 @@ function app()
 function fix_so()
 {
   local libdir=$TOOL_HOME/sysroot/usr/lib
-  ln -sf $libdir/libc.so $libdir/librt.so
-  ln -sf $libdir/libc.so $libdir/libpthread.so
+  ln -sf $libdir/libc.so $GRPC/librt.so
+  ln -sf $libdir/libc.so $GRPC/libpthread.so
+  ls
 }
 
 function get_repo()
