@@ -89,7 +89,7 @@ function cmake2_cross_compile_grpc()
     #tree -L 4 -ha $ANDROID_NDK
     export ANDROID_NDK=$TOOL_HOME/ndk
     cmake -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
-    -DANDROID_ABI=armeabi-v8a \
+    -DANDROID_ABI=armeabi-v7a \
     -DANDROID_PLATFORM=android-26 \
     -DANDROID_STL=c++_static \
     -DRUN_HAVE_STD_REGEX=0 \
@@ -100,7 +100,7 @@ function cmake2_cross_compile_grpc()
     -DBUILD_SHARED_LIBS=ON \
     -DgRPC_INSTALL=ON \
     ../..
-    cmake --build . --target grpc++
+#    cmake --build . --target grpc++
     make -j 4 install
     tree -L 3 -ha .
     popd
