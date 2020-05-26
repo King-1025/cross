@@ -268,7 +268,7 @@ function check()
         if [ -e $TOOL_HOME ]; then
 	     flag=1
 	else
-	   case $TOOL_KEY in
+	   case "$TOOL_KEY" in
 	      "NDK"|"self-ndk") flag=-1 ;;
 	   esac
 	fi
