@@ -55,6 +55,7 @@ function test_tool()
 function install_ndk()
 {
      echo "install ndk..."
+     local flag=0
      local ver="android-ndk-r21-linux-x86_64"
      if [ "$NDK_VERSION" != "" ]; then
 	ver="$NDK_VERSION"
@@ -62,19 +63,27 @@ function install_ndk()
      local url="https://dl.google.com/android/repository/${ver}.zip"
      local tmp=$(mktemp --suffix=.zip -u)
      echo "fetch ${url}..." && wget -qO "$tmp" "$url"
-     if [ ! -e $tmp ]; then
+     if [ -e $tmp ]; then
+        local opt=$TOOL_HOME/opt
+        mkdir -p $opt && unzip -q $tmp -d $opt && rm -rf $tmp
+        if [ $? -eq 0 ]; then
+           local ndk=$(find $opt -type d -depth -maxdepth 1 -mindepth 1 -print)
+	   if [ "$ndk" != "" ]; then
+	      ln -sf "$ndk" "$TOOL_HOME/ndk"
+              add_github_path "$ndk"
+	      set_github_env "ANDROID_NDK_HOME" "$ndk"
+              tree -ah -L 3 $TOOL_HOME
+	      flag=1
+	   else
+	      echo "find ndk failed!"
+           fi
+	 else
+	   echo "unzip ndk failed!"
+         fi
+     else
 	echo download ndk $ver failed!
-	exit 1
      fi
-     mkdir -p $TOOL_HOME/opt 
-     unzip $tmp -d $TOOL_HOME/opt && rm -rf $tmp
-
-     tree -ah -L 3 $TOOL_HOME 
-     if [ $? -eq 0 ]; then
-   #     add_github_path "$CTNG_HOME/bin"
-        echo 
-     fi
-     exit 1
+     return $flag
 }
 
 function install_tool()
@@ -84,6 +93,7 @@ function install_tool()
    case "$flag" in
      "ndk")
 	install_ndk
+	[ $? -eq 0 ] && exit 1
      ;;
      "tool")
 	if [ $TOOL_FLAG -eq 0 ]; then
