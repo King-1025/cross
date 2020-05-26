@@ -277,18 +277,35 @@ function check()
      "compile")
 	local flag=0
         if [ -e $TOOL_HOME ]; then
-             add_github_path "$TOOL_HOME/bin"
+	     case $TOOL_KEY in
+	        "NDK"|"self-ndk")
+                     local ndk=$TOOL_HOME/ndk
+                     add_github_path "$ndk"
+	             set_github_env "ANDROID_NDK_HOME" "$ndk"
+		;;
+         	*)
+		     add_github_path "$TOOL_HOME/bin"
+		;;
+   	     esac
 	     flag=1
 	else
-	    local path="$(pwd)/cross-tool"
-	    if [ -e $path ]; then
-	       mv $path $TOOL_HOME
-               add_github_path "$TOOL_HOME/bin"
-	       flag=1
-	    else
-	       echo "not found cross tool!"
-	       exit 1
-	    fi
+	     case $TOOL_KEY in
+	        "NDK"|"self-ndk")
+                     install_ndk
+	             if [ $? -eq 0 ]; then exit 1; fi
+		 ;;
+	         *)
+	             local path="$(pwd)/cross-tool"
+    	             if [ -e $path ]; then
+	                mv $path $TOOL_HOME
+                        add_github_path "$TOOL_HOME/bin"
+	                flag=1
+          	     else
+         	        echo "not found cross tool!"
+	                exit 1
+    	             fi
+	          ;;
+            esac
 	fi
         set_github_env "COMPILE_FLAG" "$flag"
      ;;

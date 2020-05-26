@@ -10,8 +10,9 @@ function app()
 {
    get_repo
    install_cmake
-   fix_so
-   cross_compile_grpc
+   cmake2_cross_compile_grpc
+   #fix_so
+   #cross_compile_grpc
 }
 
 function fix_so()
@@ -76,6 +77,26 @@ function cross_compile_grpc()
   export GRPC_CROSS_AROPTS="rc --target=elf64-little"
   
   make -j 4
+}
+
+function cmake2_cross_compile_grpc()
+{
+    export ANDROID_NDK=$TOOL_HOME/ndk
+    mkdir -p "cmake/aarch64_build"
+    pushd "cmake/aarch64_build"
+    cmake -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake\
+    -DANDROID_ABI=armeabi-v7a\
+    -DANDROID_PLATFORM=android-26\
+    -DANDROID_STL=c++_static\
+    -DRUN_HAVE_STD_REGEX=0\
+    -DRUN_HAVE_POSIX_REGEX=0\
+    -DRUN_HAVE_STEADY_CLOCK=0\
+    -DCMAKE_BUILD_TYPE=Release
+    ../..
+    cmake --build . --target grpc++
+    #make -j 4 install
+    tree -L 3 -ha .
+    popd
 }
 
 function cmake_cross_compile_grpc()
