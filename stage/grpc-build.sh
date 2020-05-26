@@ -98,7 +98,6 @@ function cmake2_cross_compile_grpc()
     -DRUN_HAVE_STEADY_CLOCK=0 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=$RESULT \
-    -DgRPC_SSL_PROVIDER=package \
     -DBUILD_SHARED_LIBS=OFF \
     -DgRPC_INSTALL=ON \
     ../..
