@@ -3,7 +3,8 @@
 ROOT=$(pwd)
 RESULT=$ROOT/result
 
-CC=aarch64-unknown-linux-android-gcc
+#CC=aarch64-unknown-linux-android-gcc
+CC=aarch64-linux-android-gcc
 
 mkdir -p $RESULT
 
@@ -15,7 +16,9 @@ rt=$($CC -print-sysroot)
 
 echo "CC PATH:$(which $CC)"
 
-aarch64-unknown-linux-android-populate -s $ROOT/test -d $RESULT -v -f
+#aarch64-unknown-linux-android-populate -s $ROOT/test -d $RESULT -v -f
+
+aarch64-linux-android-populate -s $ROOT/test -d $RESULT -v -f
 
 $CC --help
 echo ""
