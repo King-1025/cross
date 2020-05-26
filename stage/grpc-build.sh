@@ -10,7 +10,15 @@ function app()
 {
    get_repo
    install_cmake
+   fix_so
    cross_compile_grpc
+}
+
+function fix_so()
+{
+  local libdir=$TOOL_HOME/sysroot/usr/lib
+  ln -sf $libdir/libc.so $libdir/librt.so
+  ln -sf $libdir/libc.so $libdir/libpthread.so
 }
 
 function get_repo()
