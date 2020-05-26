@@ -10,6 +10,7 @@ function app()
 {
    get_repo
    install_cmake
+#   build_host_grpc
    cmake2_cross_compile_grpc
    #fix_so
    #cross_compile_grpc
@@ -97,7 +98,8 @@ function cmake2_cross_compile_grpc()
     -DRUN_HAVE_STEADY_CLOCK=0 \
     -DCMAKE_BUILD_TYPE=Release \
     -DCMAKE_INSTALL_PREFIX=$RESULT \
-    -DBUILD_SHARED_LIBS=ON \
+    -DgRPC_SSL_PROVIDER=package \
+    -DBUILD_SHARED_LIBS=OFF \
     -DgRPC_INSTALL=ON \
     ../..
 #    cmake --build . --target grpc++
