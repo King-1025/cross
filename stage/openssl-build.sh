@@ -13,9 +13,9 @@ cd openssl
 
 export ANDROID_NDK_ROOT=$TOOL_HOME
 
-#./Configure android-aarch64 -D__ANDROID_API__=21 --prefix=$RESULT --cross-compile-prefix=aarch64-unknown-linux-android- -enable-threads
+#./Configure linux-aarch64 -D__ANDROID_API__=21 --prefix=$RESULT --cross-compile-prefix=aarch64-unknown-linux-android- -enable-threads
 
-./Configure android-aarch64 -D__ANDROID_API__=21 --prefix=$RESULT
+./Configure android64-aarch64 -D__ANDROID_API__=21 --prefix=$RESULT
 
 make -j 4
 
