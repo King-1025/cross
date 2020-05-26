@@ -18,16 +18,16 @@ rm cmake-linux.sh
 # Build and install gRPC for the host architecture.
 # We do this because we need to be able to run protoc and grpc_cpp_plugin
 # while cross-compiling.
-mkdir -p "cmake/build"
-pushd "cmake/build"
-cmake \
-  -DCMAKE_BUILD_TYPE=Release \
-  -DgRPC_INSTALL=ON \
-  -DgRPC_BUILD_TESTS=OFF \
-  -DgRPC_SSL_PROVIDER=package \
-  ../..
-sudo make -j 4 install
-popd
+#mkdir -p "cmake/build"
+#pushd "cmake/build"
+#cmake \
+#  -DCMAKE_BUILD_TYPE=Release \
+#  -DgRPC_INSTALL=ON \
+#  -DgRPC_BUILD_TESTS=OFF \
+#  -DgRPC_SSL_PROVIDER=package \
+#  ../..
+#sudo make -j 4 install
+#popd
 
 
 #STAGE=/tmp/aarch64_stage
