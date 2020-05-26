@@ -17,8 +17,9 @@ function app()
 function fix_so()
 {
   local libdir=$TOOL_HOME/sysroot/usr/lib
-  ln -sf $libdir/libc.so $GRPC/librt.so
-  ln -sf $libdir/libc.so $GRPC/libpthread.so
+  mkdir $GRPC/.lib
+  ln -sf $libdir/libc.so $GRPC/.lib/librt.so
+  ln -sf $libdir/libc.so $GRPC/.lib/libpthread.so
   ls
 }
 
@@ -71,7 +72,7 @@ function cross_compile_grpc()
   export STRIP="${prefix}-strip"
   export PROTOBUF_CONFIG_OPTS="--host=${prefix} --with-sysroot=${SYSROOT} --with-protoc=/usr/local/bin/protoc CFLAGS='-march=armv7-a -D__ANDROID_API__=26' CXXFLAGS='-frtti -fexceptions -march=armv7-a -D__ANDROID_API__=26' LIBS='-llog -lz -lc++_static'"
   export HAS_PKG_CONFIG=false
-  export GRPC_CROSS_LDOPTS="-L$SYSROOT -L$GRPC"
+  export GRPC_CROSS_LDOPTS="-L$SYSROOT -L$GRPC  -L$GRPC/.lib"
   export GRPC_CROSS_AROPTS="rc --target=elf64-little"
   
   make -j 4

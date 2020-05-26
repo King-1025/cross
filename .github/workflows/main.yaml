@@ -74,12 +74,7 @@ jobs:
 
        - name: 安装NDK
          if: steps.cache_0.outputs.cache-hit != 'true' && env.KEY_FLAG == '-1'
-         uses: ravinderjangra/android-ndk-toolchain-setup@0.2
-         with:
-            api: ${{ env.TOOL_API }}
-            arch: ${{ env.TOOL_ARCH }}
-            install-location: ${{ env.TOOL_HOME }}
-            force: true
+         run: ./cross install_tool ndk
 
        - name: 检查ct-ng缓存
          if: steps.cache_0.outputs.cache-hit != 'true' && env.KEY_FLAG == '0'

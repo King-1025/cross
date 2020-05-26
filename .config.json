@@ -8,11 +8,12 @@
    },
    "tool": {
       "_key": "self-aarch64",
-      "key": "NDK",
+      "key": "self-ndk",
       "config": "./config/build.config",
       "is_upload": "false",
       "api": "21",
-      "arch": "arm64"
+      "arch": "arm64",
+      "ndk_version": ""
    },
    "compile": {
       "script": "./stage/grpc-build.sh",

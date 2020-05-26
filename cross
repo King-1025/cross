@@ -52,11 +52,39 @@ function test_tool()
    esac
 }
 
+function install_ndk()
+{
+     echo "install ndk..."
+     local ver="android-ndk-r21-linux-x86_64"
+     if [ "$NDK_VERSION" != "" ]; then
+	ver="$NDK_VERSION"
+     fi
+     local url="https://dl.google.com/android/repository/${ver}.zip"
+     local tmp=$(mktemp --suffix=.zip -u)
+     echo "fetch ${url}..." && wget -qO "$tmp" "$url"
+     if [ ! -e $tmp ]; then
+	echo download ndk $ver failed!
+	exit 1
+     fi
+     mkdir -p $TOOL_HOME/opt 
+     unzip $tmp -d $TOOL_HOME/opt && rm -rf $tmp
+
+     tree -ah -L 3 $TOOL_HOME 
+     if [ $? -eq 0 ]; then
+   #     add_github_path "$CTNG_HOME/bin"
+        echo 
+     fi
+     exit 1
+}
+
 function install_tool()
 {
    local flag=$1
    shift
    case "$flag" in
+     "ndk")
+	install_ndk
+     ;;
      "tool")
 	if [ $TOOL_FLAG -eq 0 ]; then
 	  if [ -e "$TOOL_BUILD" ] ; then
@@ -320,6 +348,7 @@ function prepare()
 	 local isu=$(jq .tool.is_upload $CONFIG -r)
 	 local api=$(jq .tool.api $CONFIG -r)
 	 local arch=$(jq .tool.arch $CONFIG -r)
+	 local ver=$(jq .tool.ndk_version $CONFIG -r)
 	 set_github_env "TOOL_HOME" "$HOME/.crosstool"
 	 set_github_env "TOOL_CACHE_KEY" "tool-$tool_key"
 	 set_github_env "TOOL_KEY" "$tool_key"
@@ -327,6 +356,7 @@ function prepare()
 	 set_github_env "IS_UPLOAD" "$isu"
 	 set_github_env "TOOL_API" "$api"
 	 set_github_env "TOOL_ARCH" "$arch"
+	 set_github_env "NDK_VERSION" "$ver"
 
 	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
 	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-$ctng_key"
