@@ -35,8 +35,8 @@ STAGE=$RESULT/aarch64_stage
 TOOLCHAIN_CMAKE=/tmp/toolchain.cmake
 # SYSROOT=$($CC -print-sysroot)
 SYSROOT=$TOOL_HOME/sysroot
-CC="aarch64-linux-android-clang --sysroot $SYSROOT"
-CXX="aarch64-linux-android-clang++ --sysroot $SYSROOT"
+CC="aarch64-linux-android-clang"
+CXX="aarch64-linux-android-clang++"
 
 # sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/libpthread.so
 # sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/librt.so
