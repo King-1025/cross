@@ -81,21 +81,22 @@ function cross_compile_grpc()
 
 function cmake2_cross_compile_grpc()
 {
-    export ANDROID_NDK=$TOOL_HOME/ndk
+    cd $GRPC
     mkdir -p "cmake/aarch64_build"
     pushd "cmake/aarch64_build"
-    tree -L 4 -ha $ANDROID_NDK
-    cmake -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake\
-    -DANDROID_ABI=armeabi-v7a\
-    -DANDROID_PLATFORM=android-26\
-    -DANDROID_STL=c++_static\
-    -DRUN_HAVE_STD_REGEX=0\
-    -DRUN_HAVE_POSIX_REGEX=0\
-    -DRUN_HAVE_STEADY_CLOCK=0\
-    -DCMAKE_BUILD_TYPE=Release
+    #tree -L 4 -ha $ANDROID_NDK
+    export ANDROID_NDK=$TOOL_HOME/ndk
+    cmake -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
+    -DANDROID_ABI=armeabi-v7a \
+    -DANDROID_PLATFORM=android-26 \
+    -DANDROID_STL=c++_static \
+    -DRUN_HAVE_STD_REGEX=0 \
+    -DRUN_HAVE_POSIX_REGEX=0 \
+    -DRUN_HAVE_STEADY_CLOCK=0 \
+    -DCMAKE_BUILD_TYPE=Release \
     ../..
-    #cmake --build . --target grpc++
-    make -j 4 install
+    cmake --build . --target grpc++
+   # make -j 4 install
     tree -L 3 -ha .
     popd
 }
