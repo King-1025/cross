@@ -101,7 +101,7 @@ function cmake2_cross_compile_grpc()
     -DBUILD_SHARED_LIBS=OFF \
     -DgRPC_INSTALL=ON \
     ../..
-#    cmake --build . --target grpc++
+    cmake --build . --target grpc++
     make -j 4 install
     tree -L 3 -ha .
     popd
