@@ -57,6 +57,10 @@ set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_PACKAGE ONLY)
 EOF
 
+export ANDROID_NDK=$TOOL_HOME
+
+TOOLCHAIN_CMAKE=$ROOT/stage/ndk/Android.cmake
+
 mkdir -p "cmake/aarch64_build"
 pushd "cmake/aarch64_build"
 cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
