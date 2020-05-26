@@ -258,7 +258,7 @@ function check()
 	     flag=1
 	else
 	   case $TOOL_KEY in
-	      "NDK") flag=-1 ;;
+	      "NDK"|"self-ndk") flag=-1 ;;
 	   esac
 	fi
         set_github_env "KEY_FLAG" "$flag"
