@@ -10,7 +10,7 @@ function app()
 {
    get_repo
    install_cmake
-   build_host_grpc
+#   build_host_grpc
    cmake2_cross_compile_grpc
    #fix_so
    #cross_compile_grpc
@@ -101,8 +101,8 @@ function cmake2_cross_compile_grpc()
     -DBUILD_SHARED_LIBS=OFF \
     -DgRPC_INSTALL=ON \
     ../..
-    cmake --build . --target grpc++
-    make -j 4 install
+#    cmake --build . --target grpc++
+    LIBS="-llog" make -j 4 install
     tree -L 3 -ha .
     popd
 }
