@@ -12,7 +12,7 @@
       "config": "./config/build.config",
       "is_upload": "false",
       "api": "21",
-      "arch": "aarch64"
+      "arch": "arm64"
    },
    "compile": {
       "script": "./test/build.sh",
