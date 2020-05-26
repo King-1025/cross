@@ -7,7 +7,8 @@
       "is_upload": "false"
    },
    "tool": {
-      "key": "self-aarch64",
+      "_key": "self-aarch64",
+      "key": "NDK",
       "config": "./config/build.config",
       "is_upload": "false",
       "api": "21",
