@@ -9,7 +9,9 @@
    "tool": {
       "key": "self-aarch64",
       "config": "./config/build.config",
-      "is_upload": "false"
+      "is_upload": "false",
+      "api": "21",
+      "arch": "aarch64"
    },
    "compile": {
       "script": "./test/build.sh",

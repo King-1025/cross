@@ -69,8 +69,20 @@ jobs:
             path: ${{ env.TOOL_HOME }}
             key: ${{ runner.os }}-${{ env.TOOL_CACHE_KEY }}
 
+       - name: 检查TOOL_KEY
+         run: ./cross check tool_key
+
+       - name: 安装NDK
+         if: steps.cache_0.outputs.cache-hit != 'true' && env.KEY_FLAG == '-1'
+         uses: ravinderjangra/android-ndk-toolchain-setup@0.2
+         with:
+            api: ${{ env.TOOL_API }}
+            arch: ${{ env.TOOL_ARCH }}
+            install-location: ${{ env.TOOL_HOME }}
+            force: true
+
        - name: 检查ct-ng缓存
-         if: steps.cache_0.outputs.cache-hit != 'true'
+         if: steps.cache_0.outputs.cache-hit != 'true' && env.KEY_FLAG == '0'
          uses: actions/cache@v1
          id: cache_1
          with:
@@ -78,7 +90,7 @@ jobs:
             key: ${{ runner.os }}-${{ env.CTNG_CACHE_KEY }}
 
        - name: 下载ct-ng
-         if: steps.cache_0.outputs.cache-hit != 'true' && steps.cache_1.outputs.cache-hit != 'true'
+         if: steps.cache_0.outputs.cache-hit != 'true' && steps.cache_1.outputs.cache-hit != 'true' && env.KEY_FLAG == '0'
          uses: actions/download-artifact@v1
          with:
            name: ct-ng

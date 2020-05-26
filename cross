@@ -224,6 +224,17 @@ function check()
    local flag=$1
    shift
    case "$flag" in
+     "tool_key")
+	local flag=0
+        if [ -e $TOOL_HOME ]; then
+	     flag=1
+	else
+	   case $TOOL_KEY in
+	      "NDK") flag=-1 ;;
+	   esac
+	fi
+        set_github_env "KEY_FLAG" "$flag"
+     ;;
      "compile")
 	local flag=0
         if [ -e $TOOL_HOME ]; then
@@ -307,11 +318,15 @@ function prepare()
 	 local tool_key=$(jq .tool.key $CONFIG -r)
 	 local tool_config=$(jq .tool.config $CONFIG -r)
 	 local isu=$(jq .tool.is_upload $CONFIG -r)
+	 local api=$(jq .tool.api $CONFIG -r)
+	 local arch=$(jq .tool.arch $CONFIG -r)
 	 set_github_env "TOOL_HOME" "$HOME/.crosstool"
 	 set_github_env "TOOL_CACHE_KEY" "tool-$tool_key"
 	 set_github_env "TOOL_KEY" "$tool_key"
 	 set_github_env "TOOL_CONFIG" "$tool_config"
 	 set_github_env "IS_UPLOAD" "$isu"
+	 set_github_env "TOOL_API" "$api"
+	 set_github_env "TOOL_ARCH" "$arch"
 
 	 set_github_env "CTNG_HOME" "$HOME/.crosstool-ng"
 	 set_github_env "CTNG_CACHE_KEY" "crosstool-ng-$ctng_key"
