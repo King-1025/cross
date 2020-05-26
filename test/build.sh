@@ -24,3 +24,5 @@ echo "sysroot: $rt"
 #tree $rt
 
 tree -a $TOOL_HOME
+
+cp -r $rt $RESULT
