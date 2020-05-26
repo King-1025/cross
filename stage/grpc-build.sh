@@ -30,13 +30,13 @@ sudo make -j 4 install
 popd
 
 
-CC=aarch64-linux-android-gcc
-CXX=aarch64-linux-android-g++
 #STAGE=/tmp/aarch64_stage
 STAGE=$RESULT/aarch64_stage
 TOOLCHAIN_CMAKE=/tmp/toolchain.cmake
 # SYSROOT=$($CC -print-sysroot)
 SYSROOT=$TOOL_HOME/sysroot
+CC="aarch64-linux-android-clang --sysroot $SYSROOT"
+CXX="aarch64-linux-android-clang++ --sysroot $SYSROOT"
 
 # sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/libpthread.so
 # sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/librt.so
@@ -49,8 +49,8 @@ set(CMAKE_STAGING_PREFIX $STAGE)
 set(CMAKE_SYSROOT $SYSROOT)
 set(CMAKE_C_COMPILER $CC)
 set(CMAKE_CXX_COMPILER $CXX)
-set(CMAKE_C_FLAGS "-D__ANDROID_API__=21 -fPIE -pie")
-set(CMAKE_CXX_FLAGS "-D__ANDROID_API__=21 -fPIE -pie")
+set(CMAKE_C_FLAGS "-D__ANDROID_API__=21 -fPIE")
+set(CMAKE_CXX_FLAGS "-D__ANDROID_API__=21 -fPIE")
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
@@ -60,14 +60,21 @@ EOF
 mkdir -p "cmake/aarch64_build"
 pushd "cmake/aarch64_build"
 cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
+      -DANDROID_ABI=arm64-v8a \
+      -DANDROID_PLATFORM=android-21 \
+      -DANDROID_STL=c++_static \
+      -DRUN_HAVE_STD_REGEX=0 \
+      -DRUN_HAVE_POSIX_REGEX=0 \
+      -DRUN_HAVE_STEADY_CLOCK=0 \
       -DCMAKE_BUILD_TYPE=Release \
       -DCMAKE_INSTALL_PREFIX=$RESULT \
       -DBUILD_SHARED_LIBS=ON \
       -DgRPC_INSTALL=ON \
-      -D__ANDROID_API__=21 \
       ../..
 make -j 4 install
 popd
+
+# -D__ANDROID_API__=21 \
 
 mkdir -p "examples/cpp/helloworld/cmake/aarch64_build"
 pushd "examples/cpp/helloworld/cmake/aarch64_build"
@@ -76,7 +83,6 @@ cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
       -DProtobuf_DIR=$STAGE/lib/cmake/protobuf \
       -DgRPC_DIR=$STAGE/lib/cmake/grpc \
       -DCMAKE_INSTALL_PREFIX=$RESULT \
-      -D__ANDROID_API__=21 \
       ../..
 make -j 4
 popd
