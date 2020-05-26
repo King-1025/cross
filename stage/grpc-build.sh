@@ -30,15 +30,16 @@ sudo make -j 4 install
 popd
 
 
-CC=aarch64-unknown-linux-android-gcc
-CXX=aarch64-unknown-linux-android-g++
+CC=aarch64-linux-android-gcc
+CXX=aarch64-linux-android-g++
 #STAGE=/tmp/aarch64_stage
 STAGE=$RESULT/aarch64_stage
 TOOLCHAIN_CMAKE=/tmp/toolchain.cmake
-SYSROOT=$($CC -print-sysroot)
+# SYSROOT=$($CC -print-sysroot)
+SYSROOT=$TOOL_HOME/sysroot
 
-sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/libpthread.so
-sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/librt.so
+# sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/libpthread.so
+# sudo ln -sf $SYSROOT/usr/lib/libc.so  $SYSROOT/usr/lib/librt.so
 
 # Write a toolchain file to use for cross-compiling.
 cat > $TOOLCHAIN_CMAKE << EOF
@@ -48,8 +49,8 @@ set(CMAKE_STAGING_PREFIX $STAGE)
 set(CMAKE_SYSROOT $SYSROOT)
 set(CMAKE_C_COMPILER $CC)
 set(CMAKE_CXX_COMPILER $CXX)
-set(CMAKE_C_FLAGS "-D__ANDROID_API__=29 -llog -fPIE -pie")
-set(CMAKE_CXX_FLAGS "-D__ANDROID_API__=29 -llog -fPIE -pie")
+set(CMAKE_C_FLAGS "-D__ANDROID_API__=21 -fPIE -pie")
+set(CMAKE_CXX_FLAGS "-D__ANDROID_API__=21 -fPIE -pie")
 set(CMAKE_FIND_ROOT_PATH_MODE_PROGRAM NEVER)
 set(CMAKE_FIND_ROOT_PATH_MODE_LIBRARY ONLY)
 set(CMAKE_FIND_ROOT_PATH_MODE_INCLUDE ONLY)
@@ -63,7 +64,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
       -DCMAKE_INSTALL_PREFIX=$RESULT \
       -DBUILD_SHARED_LIBS=ON \
       -DgRPC_INSTALL=ON \
-      -D__ANDROID_API__=29 \
+      -D__ANDROID_API__=21 \
       ../..
 make -j 4 install
 popd
@@ -75,7 +76,7 @@ cmake -DCMAKE_TOOLCHAIN_FILE=$TOOLCHAIN_CMAKE \
       -DProtobuf_DIR=$STAGE/lib/cmake/protobuf \
       -DgRPC_DIR=$STAGE/lib/cmake/grpc \
       -DCMAKE_INSTALL_PREFIX=$RESULT \
-      -D__ANDROID_API__=29 \
+      -D__ANDROID_API__=21 \
       ../..
 make -j 4
 popd
