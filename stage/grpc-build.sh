@@ -104,7 +104,8 @@ function cmake2_cross_compile_grpc()
     cmake --build . --target grpc++
 #    LIBS="-llog" make -j 4 install
     tree -L 3 -ha .
-    find . -name *.a -exec mv {} $RESULT \;
+    mkdir -p $RESULT
+    find . -name "*.a" -exec mv {} $RESULT \;
     popd
 }
 
