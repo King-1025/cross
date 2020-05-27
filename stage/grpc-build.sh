@@ -10,7 +10,7 @@ function app()
 {
    get_repo
    install_cmake
-#   build_host_grpc
+   build_host_grpc
    cmake2_cross_compile_grpc
    #fix_so
    #cross_compile_grpc
@@ -59,23 +59,23 @@ function build_host_grpc()
 
 function cross_compile_grpc()
 {
-  local prefix="aarch64-linux-android"
+#  local prefix="aarch64-linux-android"
   export GRPC_CROSS_COMPILE=true
  # export PATH=/home/ubuntu/stand-alone-toolchain/arm-26-toolchain-clang/bin:$PATH
-  export SYSROOT=$TOOL_HOME/sysroot
-  export HOST_CC="/usr/bin/gcc"
-  export HOST_CXX="/usr/bin/g++"
-  export HOST_LD="/usr/bin/ld"
-  export CC="${prefix}-clang --sysroot $SYSROOT"
-  export CXX="${prefix}-clang++ --sysroot $SYSROOT"
-  export LD="${prefix}-clang++"
-  export LDXX="${prefix}-clang++" 
-  export AR="${prefix}-ar"
-  export STRIP="${prefix}-strip"
+#  export SYSROOT=$TOOL_HOME/ndk/sysroot
+#  export HOST_CC="/usr/bin/gcc"
+#  export HOST_CXX="/usr/bin/g++"
+#  export HOST_LD="/usr/bin/ld"
+#  export CC="${prefix}-clang --sysroot $SYSROOT"
+#  export CXX="${prefix}-clang++ --sysroot $SYSROOT"
+#  export LD="${prefix}-clang++"
+#  export LDXX="${prefix}-clang++" 
+#  export AR="${prefix}-ar"
+#  export STRIP="${prefix}-strip"
   export PROTOBUF_CONFIG_OPTS="--host=${prefix} --with-sysroot=${SYSROOT} --with-protoc=/usr/local/bin/protoc CFLAGS='-march=armv7-a -D__ANDROID_API__=26' CXXFLAGS='-frtti -fexceptions -march=armv7-a -D__ANDROID_API__=26' LIBS='-llog -lz -lc++_static'"
   export HAS_PKG_CONFIG=false
-  export GRPC_CROSS_LDOPTS="-L$SYSROOT -L$GRPC  -L$GRPC/.lib"
-  export GRPC_CROSS_AROPTS="rc --target=elf64-little"
+ # export GRPC_CROSS_LDOPTS="-L$SYSROOT -L$GRPC  -L$GRPC/.lib"
+ # export GRPC_CROSS_AROPTS="rc --target=elf64-little"
   
   make -j 4
 }
@@ -83,6 +83,9 @@ function cross_compile_grpc()
 function cmake2_cross_compile_grpc()
 {
     # -DANDROID_ABI=armeabi-v7a \
+   export GRPC_CROSS_COMPILE=true
+   export PROTOBUF_CONFIG_OPTS="--with-protoc=/usr/local/bin/protoc CFLAGS='-march=armv7-a -D__ANDROID_API__=26' CXXFLAGS='-frtti -fexceptions -march=armv7-a -D__ANDROID_API__=26' LIBS='-llog -lz -lc++_static'"
+   export HAS_PKG_CONFIG=false
 
     cd $GRPC
     mkdir -p "cmake/aarch64_build"
