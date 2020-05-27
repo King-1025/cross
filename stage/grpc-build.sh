@@ -10,7 +10,7 @@ function app()
 {
    get_repo
    install_cmake
-   build_host_grpc
+#   build_host_grpc
    cmake2_cross_compile_grpc
    #fix_so
    #cross_compile_grpc
@@ -83,9 +83,6 @@ function cross_compile_grpc()
 function cmake2_cross_compile_grpc()
 {
     # -DANDROID_ABI=armeabi-v7a \
-   export GRPC_CROSS_COMPILE=true
-   export PROTOBUF_CONFIG_OPTS="--with-protoc=/usr/local/bin/protoc CFLAGS='-march=armv7-a -D__ANDROID_API__=26' CXXFLAGS='-frtti -fexceptions -march=armv7-a -D__ANDROID_API__=26' LIBS='-llog -lz -lc++_static'"
-   export HAS_PKG_CONFIG=false
 
     cd $GRPC
     mkdir -p "cmake/aarch64_build"
@@ -104,9 +101,10 @@ function cmake2_cross_compile_grpc()
     -DBUILD_SHARED_LIBS=OFF \
     -DgRPC_INSTALL=ON \
     ../..
-#    cmake --build . --target grpc++
-    LIBS="-llog" make -j 4 install
+    cmake --build . --target grpc++
+#    LIBS="-llog" make -j 4 install
     tree -L 3 -ha .
+    find . -name *.a -exec mv {} $RESULT \;
     popd
 }
 
