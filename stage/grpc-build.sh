@@ -88,8 +88,10 @@ function cmake2_cross_compile_grpc()
     mkdir -p "cmake/aarch64_build"
     pushd "cmake/aarch64_build"
     #tree -L 4 -ha $ANDROID_NDK
+
     export ANDROID_NDK=$TOOL_HOME/ndk
-    cmake -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
+
+    _='cmake -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
     -DANDROID_ABI=armeabi-v7a \
     -DANDROID_PLATFORM=android-26 \
     -DANDROID_STL=c++_static \
@@ -106,6 +108,15 @@ function cmake2_cross_compile_grpc()
     tree -L 3 -ha .
     mkdir -p $RESULT
     find . -name "*.a" -exec mv {} $RESULT \;
+    '
+
+    cmake -DCMAKE_TOOLCHAIN_FILE=${ANDROID_NDK}/build/cmake/android.toolchain.cmake \
+    -Dprotobuf_BUILD_PROTOC_BINARIES=OFF \
+    -DgRPC_INSTALL=ON \
+    -DCMAKE_BUILD_TYPE=Release \
+    -DCMAKE_INSTALL_PREFIX=$RESULT \
+    ../..
+    make -j 4 && make install
     popd
 }
 
