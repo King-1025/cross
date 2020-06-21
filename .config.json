@@ -8,9 +8,12 @@
    },
    "tool": {
       "_key": "self-aarch64",
-      "key": "self-ndk",
-      "config": "./config/build.config",
-      "is_upload": "false",
+      "_key0": "self-ndk",
+      "_config": "./config/build.config",
+
+      "key":"arm-unknown-linux-uclibcgnueabi",
+      "config":":key",
+      "is_upload": "true",
       "api": "21",
       "arch": "arm64",
       "ndk_version": ""

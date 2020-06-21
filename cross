@@ -48,7 +48,7 @@ function test_tool()
      "ct-ng")
          which ct-ng && ct-ng list-samples
 	 echo "CTNG_HOME: $CTNG_HOME" 
-	 exit 1
+	 # exit 1
      ;;
    esac
 }
