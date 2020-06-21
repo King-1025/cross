@@ -46,8 +46,9 @@ function test_tool()
    shift
    case "$flag" in
      "ct-ng")
-         # which ct-ng && ct-ng list-samples
+         which ct-ng && ct-ng list-samples
 	 echo "CTNG_HOME: $CTNG_HOME" 
+	 exit 1
      ;;
    esac
 }
