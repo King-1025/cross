@@ -47,6 +47,7 @@ function test_tool()
    case "$flag" in
      "ct-ng")
          which ct-ng && ct-ng list-samples
+	 ct-ng --help
 	 echo "CTNG_HOME: $CTNG_HOME" 
 	 # exit 1
      ;;
@@ -99,6 +100,7 @@ function install_tool()
      ;;
      "tool")
 	if [ $TOOL_FLAG -eq 0 ]; then
+	  echo "TOOL_BUILD: $TOOL_BUILD"
 	  if [ -e "$TOOL_BUILD" ] ; then
 	     cd $TOOL_BUILD
 	     echo $(pwd)
