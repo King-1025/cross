@@ -101,6 +101,9 @@ function install_tool()
      "tool")
 	if [ $TOOL_FLAG -eq 0 ]; then
 	  echo "TOOL_BUILD: $TOOL_BUILD"
+	  if [ ! -e "$TOOL_BUILD" ] ; then
+	     export TOOL_BUILD="$(pwd)/build"
+	  fi
 	  if [ -e "$TOOL_BUILD" ] ; then
 	     cd $TOOL_BUILD
 	     echo $(pwd)
@@ -170,8 +173,8 @@ function build_tool()
 		 exit 1
 	      fi
 	   fi
-	   ct-ng build.4
 	   set_github_env "TOOL_BUILD" "$(pwd)"
+	   ct-ng -s build.4
 	else
 	  echo "cross tool oK!" 
 	fi
