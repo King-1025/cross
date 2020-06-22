@@ -99,19 +99,39 @@ function install_tool()
 	if [ $? -eq 0 ]; then exit 1; fi
      ;;
      "tool")
+	if [ "$CTNG_HOME" == "" ]; then
+           export CTNG_HOME="$HOME/.crosstool-ng"
+	fi
 	if [ $TOOL_FLAG -eq 0 ]; then
 	  echo "TOOL_BUILD: $TOOL_BUILD"
 	  if [ ! -e "$TOOL_BUILD" ] ; then
+   	     echo "TOOL_BUILD not exist! and will set $(pwd)/build"
 	     export TOOL_BUILD="$(pwd)/build"
 	  fi
 	  if [ -e "$TOOL_BUILD" ] ; then
 	     cd $TOOL_BUILD
-	     echo $(pwd)
+
+	     echo "TOOL_BUILD: $TOOL_BUILD"
 	     ls -a -l -h
-	     echo $CTNG_HOME
-	     ls -a -l -h $CTNG_HOME
-	     echo ""
+	     echo "> list TOOL_BUILD dir"
 	     tree -a -L 3 -h
+
+	     echo "CTNG_HOME: $CTNG_HOME"
+	     ls -a -l -h $CTNG_HOME
+	     echo "> list CTNG_HOME dir"
+	     tree -a -L 3 -h
+
+	     echo "> copy $TOOL_BUILD to $RESULT "
+             cp -r $TOOL_BUILD $RESULT
+
+             local ss_path="$HOME/x-tools/$TOOL_KEY"
+
+	     echo "ss_path: $ss_path"
+	     ls -h -l -a $ss_path
+	     echo ""
+             cp -r $ss_path $RESULT
+	     echo ""
+
              if [ "$TOOL_CONFIG" == ":key" ]; then
                 local path="$HOME/x-tools/$TOOL_KEY"
 		if [ -e $path ]; then
@@ -121,7 +141,7 @@ function install_tool()
 	     if [ ! -e $TOOL_HOME ]; then
                 mkdir -p $TOOL_HOME
 	     fi
-	     echo ""
+	     echo "> list TOOL_HOME dir"
 	     sudo cp .config $TOOL_HOME/build.config
 	     tree -a -L 3 -h $TOOL_HOME
 	     echo ""

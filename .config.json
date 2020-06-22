@@ -11,7 +11,7 @@
       "_key0": "self-ndk",
       "_config": "./config/build.config",
 
-      "key":"arm-linux-uclibcgnueabi",
+      "key":"arm-linux-uclibcgnueabi-0",
       "config":"./config/arm-uclibc.config",
       "is_upload": "true",
       "api": "21",
