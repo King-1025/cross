@@ -115,7 +115,7 @@ function install_tool()
              if [ "$TOOL_CONFIG" == ":key" ]; then
                 local path="$HOME/x-tools/$TOOL_KEY"
 		if [ -e $path ]; then
-		   mv $path $TOOL_HOME
+		   sudo mv $path $TOOL_HOME
                 fi
 	     fi 
 	     if [ ! -e $TOOL_HOME ]; then
@@ -127,6 +127,7 @@ function install_tool()
 	     echo ""
 	     echo "$TOOL_HOME/build.config"
 	     cat $TOOL_HOME/build.config
+             sudo cp -r $TOOL_HOME $RESULT
 	  else
 	     echo "TOOL_BUILD not exist! $TOOL_BUILD"
 	     exit 1
